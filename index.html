@@ -6,214 +6,523 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maheswari's Portfolio</title>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="design .css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4B0082',
+                        secondary: '#D8BFD8',
+                        dark: '#1e293b'
+                    },
+                    screens: {
+                        'xs': '480px',
+                    }
+                }
+            }
+        }
     </script>
-    <script type="text/javascript">
-        (function () {
-            emailjs.init({
-                publicKey: "kexRGRF7inJ9iWK_Q",
-            });
-        })();
-    </script>
-    
+
+    <style>
+        /* Add these styles in the head or in a style tag */
+        .dynamic-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .dynamic-particle {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: floatParticle linear infinite;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.5;
+            }
+
+            80% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateY(-20vh) translateX(20px);
+                opacity: 0;
+            }
+        }
+
+        /* Modal animations */
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+
+    <!-- Add preload hints for better performance -->
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
 </head>
 
-<body>
-    <header>
+<body class="bg-gray-50 text-gray-800 font-sans relative">
+    <!-- Scroll Progress Indicator -->
+    <div id="progress-bar" class="h-1 bg-secondary fixed top-0 left-0 z-50"></div>
 
-<nav class="navbar">
-    <button class="nav-toggle" aria-label="toggle navigation">
-        <span class="hamburger"></span>
+    <!-- Back to Top Button -->
+    <button id="back-to-top"
+        class="fixed bottom-6 w-[50px] right-6 bg-primary text-white p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 z-40 hover:bg-secondary">
+        <i class="fas fa-arrow-up"></i>
     </button>
-    <ul class="nav-links">
-        <li><a href="#hero">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-    </ul>
-</nav>
+
+    <header class="fixed w-full z-50 navbar transition-all duration-300">
+        <div class="navbar-glass"></div>
+        <nav class="container mx-auto px-4 py-3 flex justify-between items-center relative z-10">
+            <div class="text-2xl font-bold text-white flex items-center">
+                <span class="text-gradient">Mahesh</span>
+                <div class="pulse-dot ml-1"></div>
+            </div>
+            <button class="lg:hidden block text-white nav-toggle" id="nav-toggle" aria-label="toggle navigation">
+                <span class="hamburger"></span>
+            </button>
+            <ul class="hidden lg:flex space-x-4 xl:space-x-8 text-sm font-medium nav-links">
+                <li><a href="#hero" class="nav-item active"><span>Home</span></a></li>
+                <li><a href="#about" class="nav-item"><span>About</span></a></li>
+                <li><a href="#education" class="nav-item"><span>Education</span></a></li>
+                <li><a href="#skills" class="nav-item"><span>Skills</span></a></li>
+                <li><a href="#projects" class="nav-item"><span>Projects</span></a></li>
+                <li><a href="#contact" class="nav-item"><span>Contact</span></a></li>
+            </ul>
+        </nav>
+        <!-- Mobile menu -->
+        <div class="mobile-menu-container fixed w-full top-[60px] lg:hidden transition-all duration-300 invisible opacity-0"
+            id="mobile-menu">
+            <div class="bg-[#1e1e1e]/95 backdrop-blur-md py-4 shadow-lg rounded-b-lg mx-4">
+                <ul class="flex flex-col items-center space-y-4 text-white py-2">
+                    <li class="w-full"><a href="#hero" class="mobile-nav-item block px-6 py-2 w-full"><i
+                                class="fas fa-home mr-2"></i>Home</a></li>
+                    <li class="w-full"><a href="#about" class="mobile-nav-item block px-6 py-2 w-full"><i
+                                class="fas fa-user mr-2"></i>About</a></li>
+                    <li class="w-full"><a href="#education" class="mobile-nav-item block px-6 py-2 w-full"><i
+                                class="fas fa-graduation-cap mr-2"></i>Education</a></li>
+                    <li class="w-full"><a href="#skills" class="mobile-nav-item block px-6 py-2 w-full"><i
+                                class="fas fa-code mr-2"></i>Skills</a></li>
+                    <li class="w-full"><a href="#projects" class="mobile-nav-item block px-6 py-2 w-full"><i
+                                class="fas fa-project-diagram mr-2"></i>Projects</a></li>
+                    <li class="w-full"><a href="#contact" class="mobile-nav-item block px-6 py-2 w-full"><i
+                                class="fas fa-envelope mr-2"></i>Contact</a></li>
+                </ul>
+            </div>
+        </div>
     </header>
 
     <main>
-     
-        <section id="hero">
-           
+        <section id="hero"
+            class="min-h-screen flex items-center justify-center relative bg-gradient-to-r from-[#4B0082] to-[#D8BFD8] text-white overflow-hidden"
+            tabindex="0" aria-label="Hero section - Introduction">
             <div class="hero-bg"></div>
-        
-            
-            <div class="hero-content">
-                <div class="hero-text" data-aos="fade-up">
-                    <h1>I'M MAHESWARI</h1>
-                    <h3>FRONTEND DEVELOPER | DATABASE DEVELOPER | UI/UX ENGINEER</h3>
+            <div class="hero-particles"></div>
+            <!-- Dynamic particles will be added by JS -->
+            <div class="hero-content" data-aos="fade-up">
+                <div class="hero-text text-center">
+                    <h1 class="text-4xl xs:text-5xl md:text-7xl font-bold mb-4 animated-text">I'M MAHESWARI</h1>
+                    <h3 class="text-sm xs:text-lg md:text-xl font-light tracking-wider mb-8 typewriter">FRONTEND
+                        DEVELOPER |
+                        DATABASE DEVELOPER | UI/UX ENGINEER</h3>
                 </div>
+                <a href="#about"
+                    class="inline-block bg-white text-[#4B0082] px-6 py-2 md:px-8 md:py-3 rounded-full font-medium hover:bg-purple-50 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">Discover
+                    More</a>
             </div>
-        
-            <!-- Scroll indicator -->
-            <div class="scroll-indicator">
-                <i class="fas fa-chevron-down"></i>
+            <div
+                class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer scroll-down-btn">
+                <i class="fas fa-chevron-down text-2xl"></i>
             </div>
         </section>
-        
 
-<section id="about" data-aos="fade-up">
-    <div class="about-container">
-        <div class="about-image" data-aos="fade-right">
-            <img src="profile photo.jpg "alt="Maheswari" class="profile-img">
-        </div>
-        <div class="about-text" data-aos="fade-left">
-            <h2>About Me</h2>
-            <p>
-                I am <strong>Maheswari</strong>, a skilled <strong>Frontend Developer</strong> and aspiring
-                <strong>UI/UX Designer</strong> with a strong foundation in <strong>C, C++, Java, HTML, CSS, JavaScript,
-                    Next.js, and MySQL</strong>. My expertise extends beyond frontend development, as I am also
-                proficient in <strong>SQL</strong>, allowing me to work seamlessly with databases and optimize
-                data-driven applications.With a keen eye for design and a passion for creating intuitive user experiences, I strive to build
-                <strong>responsive, scalable, and visually engaging digital solutions</strong>. I enjoy solving complex
-                problems through clean, efficient code while ensuring seamless interaction between the frontend and
-                backend.
-            </p>
-        </div>
-    </div>
-</section>
-
-        <section id="education" data-aos="fade-up">
-            <h2>Education</h2>
-            <div class="education-item">
-                <h3>Bachelor of Engineering in Computer Science</h3>
-                <p>Karpagam Academy Of Higher Education [cgpa: 8.43]- 2022-2026</p>
-            </div>
-            <div class="education-item">
-                
-                <h3>HSC - 85 % -2022</h3>
-                <h3>SSLC - 72% -2020</h3>
-                <p>Little Angels  Matric Higher Sec School-2022</p>
-            </div>
-           
-        </section>
-
-        <section id="skills" data-aos="fade-up">
-            <h2>Technical Skills</h2>
-            <div class="skills-container">
-                <div class="skill-item">
-                    <img src="c 3.png" alt="C">
-                    <p>C</p>
-                </div>
-                <div class="skill-item">
-                    <img src="c++3.png" alt="C++">
-                    <p>C++</p>
-                </div>
-                <div class="skill-item">
-                    <img src="java.png" alt="Java">
-                    <p>Java</p>
-                </div>
-                <div class="skill-item">
-                    <img src="html.png" alt="HTML">
-                    <p>HTML</p>
-                </div>
-                <div class="skill-item">
-                    <img src="css.jpeg" alt="CSS">
-                    <p>CSS</p>
-                </div>
-                <div class="skill-item">
-                    <img src="js.png" alt="JavaScript">
-                    <p>JavaScript</p>
-                </div>
-                <div class="skill-item">
-                    <img src="nextjs.png" alt="NEXTJS">
-                    <p>NEXT.JS</p>
-                </div>
-                <div class="skill-item">
-                    <img src="reactjs.png" alt="reactjs">
-                    <p>React JS</p>
-                </div>
-                <div class="skill-item">
-                    <img src="sql.jpg" alt="MySQL">
-                    <p>MySQL</p>
-                </div>
-                
-        </section>
-
-        <section id="projects" data-aos="fade-up">
-            <h2>Projects</h2>
-            <div class="projects-grid">
-                <div class="project-card" data-aos="flip-left">
-                    <img src="\ecommerce.jpg? height=200&width=300" alt="Project 1" class="project-image">
-                    <div class="project-info">
-                        <h3>E-commerce Website</h3>
-
-                        <p>Developed a responsive E-Commerce Website using HTML, CSS, and JavaScript, featuring a sleek
-                            UI, dynamic product listings, shopping cart functionality, and smooth user interactions.
-                            Enhanced with modern design principles for a seamless shopping experience.</p>
+        <section id="about" class="py-16 md:py-20 bg-white" data-aos="fade-up">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                    <div class="w-full md:w-1/3" data-aos="fade-right">
+                        <div
+                            class="profile-img-container mx-auto max-w-[250px] md:max-w-sm relative overflow-hidden rounded-lg shadow-xl">
+                            <img src="/assets/img/mahesh.jpg" alt="Maheswari"
+                                class="w-full h-auto object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="img-overlay"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="project-card" data-aos="flip-left" data-aos-delay="100">
-                    <img src="weather.webp"?height=200&width=300" alt="Project 2" class="project-image">
-                    <div class="project-info">
-                        <h3>Weather App</h3>
-                        <p>A Weather App built using HTML, CSS, and JavaScript fetches real-time weather data from an
-                            API (such as OpenWeatherMap). The app allows users to enter a city name and get the current
-                            temperature, weather conditions, humidity, and wind speed. JavaScript handles API requests
-                            and updates the UI dynamically, while CSS ensures a clean and responsive design.</p>
-                    </div>
-                </div>
-                <div class="project-card" data-aos="flip-left" data-aos-delay="200">
-                    <img src="quiz.jpg"?height=200&width=300" alt="Project 3" class="project-image">
-                    <div class="project-info">
-                        <h3>Quiz Website</h3>
-                        <p>I created a quiz website using HTML, CSS, JavaScript, and Next.js with a clean and responsive design. It includes
-                        dynamic quizzes, a timer, and instant scoring.Next.js ensures fast performance and SEO optimization.</p>
+                    <div class="w-full md:w-2/3" data-aos="fade-left">
+                        <h2
+                            class="text-2xl xs:text-3xl font-bold mb-6 text-[#4B0082] after:content-[''] after:block after:w-20 after:h-1 after:bg-[#4B0082] after:mt-2 section-title">
+                            About Me</h2>
+                        <p class="text-gray-700 leading-relaxed mb-6 about-text">
+                            I am <strong class="text-primary">Maheswari</strong>, a skilled <strong
+                                class="text-primary">Frontend Developer</strong> and aspiring
+                            <strong class="text-primary">UI/UX Designer</strong> with a strong foundation in <strong
+                                class="text-primary">C, C++, Java, HTML, CSS,
+                                JavaScript,
+                                Next.js, and MySQL</strong>. My expertise extends beyond frontend development, as I am
+                            also
+                            proficient in <strong class="text-primary">SQL</strong>, allowing me to work seamlessly with
+                            databases and
+                            optimize
+                            data-driven applications.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed about-text">
+                            With a keen eye for design and a passion for creating intuitive user experiences, I strive
+                            to build
+                            <strong class="text-primary">responsive, scalable, and visually engaging digital
+                                solutions</strong>. I enjoy
+                            solving complex
+                            problems through clean, efficient code while ensuring seamless interaction between the
+                            frontend and
+                            backend.
+                        </p>
                     </div>
                 </div>
             </div>
         </section>
-<section id="contact" data-aos="fade-up">
-    <h2>Get in Touch</h2>
-    <form class="contact-form">
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" placeholder="Enter your name" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
-        </div>
-        <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
-        </div>
-        <button type="submit" onclick="sendMail()">Send Message</button>
-    </form>
-</section>
+
+        <section id="education" class="py-20 bg-gray-50" data-aos="fade-up" aria-label="Education background">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-12 text-center text-[#4B0082] section-title">Education</h2>
+                <div class="max-w-3xl mx-auto space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-5px] education-card"
+                        data-aos="flip-left" tabindex="0" aria-label="College education">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Bachelor of Engineering in Computer Science
+                        </h3>
+                        <p class="text-gray-600">Karpagam Academy Of Higher Education [CGPA: 8.43] - 2022-2026</p>
+                        <div class="education-icon"><i class="fas fa-graduation-cap"></i></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-5px] education-card"
+                        data-aos="flip-right" tabindex="0" aria-label="School education">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">HSC - 85% - 2022</h3>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">SSLC - 72% - 2020</h3>
+                        <p class="text-gray-600">Little Angels Matric Higher Sec School</p>
+                        <div class="education-icon"><i class="fas fa-school"></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="py-16 md:py-20 bg-white" data-aos="fade-up" aria-label="Technical skills">
+            <div class="container mx-auto px-4">
+                <h2 class="text-2xl xs:text-3xl font-bold mb-10 md:mb-12 text-center text-[#4B0082] section-title">
+                    Technical Skills</h2>
+                <div class="grid grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8 skills-grid">
+                    <div class="skill-item flex flex-col items-center" tabindex="0" aria-label="C programming language">
+                        <div
+                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
+                            <img src="/assets/img/c 3.png" alt="C" class="max-h-10">
+                        </div>
+                        <p class="font-medium skill-label text-sm xs:text-base">C</p>
+                    </div>
+                    <div class="skill-item flex flex-col items-center" tabindex="0"
+                        aria-label="C++ programming language">
+                        <div
+                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
+                            <img src="/assets/img/c++3.png" alt="C++" class="max-h-10">
+                        </div>
+                        <p class="font-medium skill-label text-sm xs:text-base">C++</p>
+                    </div>
+                    <div class="skill-item flex flex-col items-center" tabindex="0"
+                        aria-label="Java programming language">
+                        <div
+                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
+                            <img src="/assets/img/java.png" alt="Java" class="max-h-10">
+                        </div>
+                        <p class="font-medium skill-label text-sm xs:text-base">Java</p>
+                    </div>
+                    <div class="skill-item flex flex-col items-center" tabindex="0"
+                        aria-label="HTML programming language">
+                        <div
+                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
+                            <img src="/assets/img/html.png" alt="HTML" class="max-h-10">
+                        </div>
+                        <p class="font-medium skill-label text-sm xs:text-base">HTML</p>
+                    </div>
+                    <div class="skill-item flex flex-col items-center" tabindex="0"
+                        aria-label="CSS programming language">
+                        <div
+                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
+                            <img src="/assets/img/css.jpeg" alt="CSS" class="max-h-10">
+                        </div>
+                        <p class="font-medium skill-label text-sm xs:text-base">CSS</p>
+                    </div>
+                    <div class="skill-item flex flex-col items-center" tabindex="0"
+                        aria-label="JavaScript programming language">
+                        <div
+                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
+                            <img src="/assets/img/js.png" alt="JavaScript" class="max-h-10">
+                        </div>
+                        <p class="font-medium skill-label text-sm xs:text-base">JavaScript</p>
+                    </div>
+                    <div class="skill-item flex flex-col items-center" tabindex="0" aria-label="Next.js framework">
+                        <div
+                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
+                            <img src="/assets/img/nextjs.png" alt="NEXTJS" class="max-h-10">
+                        </div>
+                        <p class="font-medium skill-label text-sm xs:text-base">Next.js</p>
+                    </div>
+                    <div class="skill-item flex flex-col items-center" tabindex="0" aria-label="React.js framework">
+                        <div
+                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
+                            <img src="/assets/img/reactjs.png" alt="reactjs" class="max-h-10">
+                        </div>
+                        <p class="font-medium skill-label text-sm xs:text-base">React JS</p>
+                    </div>
+                    <div class="skill-item flex flex-col items-center" tabindex="0" aria-label="MySQL database">
+                        <div
+                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
+                            <img src="/assets/img/sql.jpg" alt="MySQL" class="max-h-10">
+                        </div>
+                        <p class="font-medium skill-label text-sm xs:text-base">MySQL</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="py-16 md:py-20 bg-gray-50" data-aos="fade-up" aria-label="Project portfolio">
+            <div class="container mx-auto px-4">
+                <h2 class="text-2xl xs:text-3xl font-bold mb-10 md:mb-12 text-center text-primary section-title">
+                    Projects</h2>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                        data-aos="flip-left" tabindex="0" aria-label="E-commerce Website Project">
+                        <div class="relative overflow-hidden project-img-container">
+                            <img src="/assets/img/ecommerce.jpg" alt="E-commerce Website Project"
+                                class="w-full h-48 object-cover transition-transform duration-500">
+                            <div class="project-overlay">
+                                <a href="#" class="project-btn" aria-label="View E-commerce Project Details">View
+                                    Project</a>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-3 text-gray-800">E-commerce Website</h3>
+                            <p class="text-gray-600 mb-4">Developed a responsive E-Commerce Website using HTML, CSS, and
+                                JavaScript, featuring a sleek
+                                UI, dynamic product listings, shopping cart functionality, and smooth user interactions.
+                                Enhanced with modern design principles for a seamless shopping experience.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">HTML</span>
+                                <span
+                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">CSS</span>
+                                <span
+                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">JavaScript</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                        data-aos="flip-left" data-aos-delay="100" tabindex="0" aria-label="Weather App Project">
+                        <div class="relative overflow-hidden project-img-container">
+                            <img src="/assets/img/weather.webp" alt="Weather App Project"
+                                class="w-full h-48 object-cover transition-transform duration-500">
+                            <div class="project-overlay">
+                                <a href="#" class="project-btn" aria-label="View Weather App Project Details">View
+                                    Project</a>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-3 text-gray-800">Weather App</h3>
+                            <p class="text-gray-600 mb-4">A Weather App built using HTML, CSS, and JavaScript fetches
+                                real-time weather data from an
+                                API (such as OpenWeatherMap). The app allows users to enter a city name and get the
+                                current
+                                temperature, weather conditions, humidity, and wind speed.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">HTML</span>
+                                <span
+                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">CSS</span>
+                                <span
+                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">JavaScript</span>
+                                <span
+                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">API</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                        data-aos="flip-left" data-aos-delay="200" tabindex="0" aria-label="Quiz Website Project">
+                        <div class="relative overflow-hidden project-img-container">
+                            <img src="/assets/img/quiz.jpg" alt="Quiz Website Project"
+                                class="w-full h-48 object-cover transition-transform duration-500">
+                            <div class="project-overlay">
+                                <a href="#" class="project-btn" aria-label="View Quiz Website Project Details">View
+                                    Project</a>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-3 text-gray-800">Quiz Website</h3>
+                            <p class="text-gray-600 mb-4">I created a quiz website using HTML, CSS, JavaScript, and
+                                Next.js with a clean and responsive design. It includes
+                                dynamic quizzes, a timer, and instant scoring. Next.js ensures fast performance and SEO
+                                optimization.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">HTML</span>
+                                <span
+                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">CSS</span>
+                                <span
+                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">JavaScript</span>
+                                <span
+                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">Next.js</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-16 md:py-20 bg-white" data-aos="fade-up">
+            <div class="container mx-auto px-4">
+                <h2 class="text-2xl xs:text-3xl font-bold mb-10 md:mb-12 text-center text-primary section-title">Get in
+                    Touch</h2>
+                <form id="contactForm" class="max-w-2xl mx-auto bg-white p-5 md:p-8 rounded-xl shadow-lg contact-form">
+                    <div class="mb-5 md:mb-6 form-group">
+                        <label for="name" class="block text-gray-700 font-medium mb-1 md:mb-2">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your name" required
+                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
+                        <span class="form-error hidden text-red-500 text-xs md:text-sm mt-1">Please enter your
+                            name</span>
+                    </div>
+                    <div class="mb-5 md:mb-6 form-group">
+                        <label for="email" class="block text-gray-700 font-medium mb-1 md:mb-2">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required
+                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
+                        <span class="form-error hidden text-red-500 text-xs md:text-sm mt-1">Please enter a valid
+                            email</span>
+                    </div>
+                    <div class="mb-5 md:mb-6 form-group">
+                        <label for="phone" class="block text-gray-700 font-medium mb-1 md:mb-2">Phone</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required
+                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
+                        <span class="form-error hidden text-red-500 text-xs md:text-sm mt-1">Please enter a valid phone
+                            number</span>
+                    </div>
+                    <div class="mb-5 md:mb-6 form-group">
+                        <label for="message" class="block text-gray-700 font-medium mb-1 md:mb-2">Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required
+                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"></textarea>
+                        <span class="form-error hidden text-red-500 text-xs md:text-sm mt-1">Please enter your
+                            message</span>
+                    </div>
+                    <button type="submit" id="submit-btn"
+                        class="w-full bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-secondary transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center">
+                        <span>Send Message</span>
+                        <i class="fas fa-paper-plane ml-2"></i>
+                    </button>
+                    <div id="form-status" class="mt-4 text-center hidden"></div>
+                </form>
+            </div>
+        </section>
     </main>
 
-    <footer>
-        <div class="footer-container">
-            <div class="social-icons">
-                <a href="https://github.com/maheswari06112004" target="_blank">
-                    <img src="github.png" alt="GitHub">
-                </a>
-                <a href="https://wa.link/4wynga" target="_blank">
-                    <img src="whatsapp.png" alt="WhatsApp">
-                </a>
-                <a href="https://www.linkedin.com/in/maheswari-a-bb829226a" target="_blank">
-                    <img src="linkedin.png" alt="LinkedIn">
-                </a>
-                <a href="https://www.instagram.com/ma_hii?igsh=MWQxaHNvMDZtMnE0eQ==" target="_blank">
-                    <img src="instagram.png" alt="Instagram">
-                </a>
-            </div>
-            <div class="footer-center">
-                <p>&copy; 2025 Maheswari. All rights reserved.</p>
+    <footer class="bg-gray-900 text-white py-10 md:py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col items-center">
+                <div class="flex flex-wrap justify-center gap-4 md:gap-6 mb-6 md:mb-8 social-links">
+                    <a href="https://github.com/maheswari06112004" target="_blank"
+                        class="social-icon hover:text-primary transition-all duration-300 transform hover:scale-110">
+                        <img src="/assets/img/github.png" alt="GitHub" class="w-8 h-8 rounded-full bg-white p-1">
+                    </a>
+                    <a href="https://wa.link/4wynga" target="_blank"
+                        class="social-icon hover:text-primary transition-all duration-300 transform hover:scale-110">
+                        <img src="/assets/img/whatsapp.png" alt="WhatsApp" class="w-8 h-8 rounded-full bg-white p-1">
+                    </a>
+                    <a href="https://www.linkedin.com/in/maheswari-a-bb829226a" target="_blank"
+                        class="social-icon hover:text-primary transition-all duration-300 transform hover:scale-110">
+                        <img src="/assets/img/linkedin.png" alt="LinkedIn" class="w-8 h-8 rounded-full bg-white p-1">
+                    </a>
+                    <a href="https://www.instagram.com/ma_hii?igsh=MWQxaHNvMDZtMnE0eQ==" target="_blank"
+                        class="social-icon hover:text-primary transition-all duration-300 transform hover:scale-110">
+                        <img src="/assets/img/instagram.png" alt="Instagram" class="w-8 h-8 rounded-full bg-white p-1">
+                    </a>
+                </div>
+                <div>
+                    <p class="text-center text-gray-400 text-sm md:text-base">&copy; 2025 Maheswari. All rights
+                        reserved.</p>
+                </div>
             </div>
         </div>
     </footer>
 
+    <noscript>
+        <div
+            style="position: fixed; top: 0; left: 0; width: 100%; background-color: #f8d7da; color: #721c24; text-align: center; padding: 10px; z-index: 9999;">
+            This website requires JavaScript to function properly. Please enable JavaScript in your browser settings.
+        </div>
+    </noscript>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
-    
+
+    <script>
+        // Error handling for scripts that might fail to load
+        window.addEventListener('error', function (e) {
+            if (e.target.tagName === 'SCRIPT') {
+                console.error('Script loading error:', e);
+
+                // Add a small notification if critical scripts fail
+                if (e.target.src.includes('emailjs') || e.target.src.includes('aos')) {
+                    const errorMsg = document.createElement('div');
+                    errorMsg.style.position = 'fixed';
+                    errorMsg.style.bottom = '20px';
+                    errorMsg.style.right = '20px';
+                    errorMsg.style.backgroundColor = '#f8d7da';
+                    errorMsg.style.color = '#721c24';
+                    errorMsg.style.padding = '10px 15px';
+                    errorMsg.style.borderRadius = '4px';
+                    errorMsg.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+                    errorMsg.style.zIndex = '9999';
+                    errorMsg.textContent = 'Some features might not work properly. Please check your internet connection.';
+
+                    document.body.appendChild(errorMsg);
+
+                    setTimeout(() => {
+                        errorMsg.style.opacity = '0';
+                        setTimeout(() => {
+                            document.body.removeChild(errorMsg);
+                        }, 500);
+                    }, 5000);
+                }
+            }
+        }, true);
+    </script>
 </body>
 
-</html> 
+</html>
