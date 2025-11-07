@@ -1,881 +1,585 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Initialize AOS (Animate on Scroll) with responsive settings
-    AOS.init({
-        duration: 800,
-        once: true,
-        offset: 50,
-        disable: window.innerWidth < 768 ? 'phone' : false
-    });
 
-    // Variables for DOM elements
-    const navbar = document.querySelector('.navbar');
+document.addEventListener('DOMContentLoaded', () => {
+    const header = document.querySelector('.site-header');
     const navToggle = document.getElementById('nav-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const backToTopBtn = document.getElementById('back-to-top');
+    const navMenu = document.querySelector('[data-nav]');
+    const navLinks = navMenu ? navMenu.querySelectorAll('a[href^="#"]') : [];
     const progressBar = document.getElementById('progress-bar');
+    const backToTopBtn = document.getElementById('back-to-top');
+    const sections = document.querySelectorAll('main section[id]');
+    const floatingItems = document.querySelectorAll('[data-floating]');
+    const revealElements = document.querySelectorAll('[data-reveal]');
     const contactForm = document.getElementById('contactForm');
     const formStatus = document.getElementById('form-status');
-    const navLinks = document.querySelectorAll('.nav-item, .mobile-nav-item');
-    const scrollDownBtn = document.querySelector('.scroll-down-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const yearEl = document.getElementById('year');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const submitBtnInitialMarkup = submitBtn ? submitBtn.innerHTML : '';
 
-    // Flag to track if mobile menu is open
-    let isMobileMenuOpen = false;
+    document.querySelectorAll('.form-error').forEach((error) => {
+        error.dataset.defaultMessage = error.textContent.trim();
+    });
 
-    // Enhanced mobile menu handling
-    function toggleMobileMenu() {
-        isMobileMenuOpen = !isMobileMenuOpen;
-        navToggle.classList.toggle('active');
-
-        if (isMobileMenuOpen) {
-            mobileMenu.classList.add('opened');
-            mobileMenu.classList.remove('invisible', 'opacity-0');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
-
-            // Add escape key listener when menu is open
-            document.addEventListener('keydown', handleEscapeKey);
-        } else {
-            mobileMenu.classList.remove('opened');
-            mobileMenu.classList.add('invisible', 'opacity-0');
-            document.body.style.overflow = '';
-
-            // Remove escape key listener when menu is closed
-            document.removeEventListener('keydown', handleEscapeKey);
-        }
+    if (yearEl) {
+        yearEl.textContent = new Date().getFullYear().toString();
     }
 
-    // Close menu with escape key
-    function handleEscapeKey(e) {
-        if (e.key === 'Escape' && isMobileMenuOpen) {
-            toggleMobileMenu();
+    // ============ PARTICLE SYSTEM INITIALIZATION ============
+    const initParticles = () => {
+        if (typeof tsParticles === 'undefined') {
+            console.warn('tsParticles not loaded');
+            return;
         }
-    }
 
-    // Improved scroll handling with requestAnimationFrame for better performance
-    let ticking = false;
-    window.addEventListener('scroll', function () {
-        if (!ticking) {
-            window.requestAnimationFrame(function () {
-                updateOnScroll();
-                ticking = false;
+        const particleConfigs = [
+            'particles-about-1', 'particles-about-2', 'particles-about-3',
+            'particles-skill-1', 'particles-skill-2', 'particles-skill-3'
+        ];
+
+        particleConfigs.forEach((id) => {
+            const container = document.getElementById(id);
+            if (!container) return;
+
+            tsParticles.load(id, {
+                particles: {
+                    number: {
+                        value: 30,
+                        density: {
+                            enable: true,
+                            area: 800
+                        }
+                    },
+                    color: {
+                        value: ["#7b5cff", "#2cb9ff", "#ff82d1"]
+                    },
+                    shape: {
+                        type: "circle"
+                    },
+                    opacity: {
+                        value: 0.3,
+                        random: true,
+                        animation: {
+                            enable: true,
+                            speed: 0.8,
+                            minimumValue: 0.1,
+                            sync: false
+                        }
+                    },
+                    size: {
+                        value: 3,
+                        random: {
+                            enable: true,
+                            minimumValue: 1
+                        },
+                        animation: {
+                            enable: true,
+                            speed: 2,
+                            minimumValue: 0.5,
+                            sync: false
+                        }
+                    },
+                    links: {
+                        enable: true,
+                        distance: 120,
+                        color: "#7b5cff",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        outModes: {
+                            default: "bounce"
+                        },
+                        attract: {
+                            enable: true,
+                            rotateX: 600,
+                            rotateY: 1200
+                        }
+                    }
+                },
+                interactivity: {
+                    detectsOn: "canvas",
+                    events: {
+                        onHover: {
+                            enable: true,
+                            mode: "grab",
+                            parallax: {
+                                enable: true,
+                                smooth: 10,
+                                force: 60
+                            }
+                        },
+                        resize: true
+                    },
+                    modes: {
+                        grab: {
+                            distance: 140,
+                            links: {
+                                opacity: 0.5
+                            }
+                        }
+                    }
+                },
+                detectRetina: true,
+                fpsLimit: 60
             });
-            ticking = true;
+        });
+    };
+
+    // Wait for tsParticles to load, then initialize
+    if (typeof tsParticles !== 'undefined') {
+        initParticles();
+    } else {
+        window.addEventListener('load', initParticles);
+    }
+
+    // ============ PARALLAX EFFECT ON SCROLL ============
+    const parallaxCards = document.querySelectorAll('.about-card, .skill-cluster, .project-card');
+    let lastScrollY = window.scrollY;
+
+    const updateParallax = () => {
+        const scrollY = window.scrollY;
+        const delta = scrollY - lastScrollY;
+
+        parallaxCards.forEach((card) => {
+            const particles = card.querySelector('.card-particles');
+            if (!particles) return;
+
+            const rect = card.getBoundingClientRect();
+            const cardCenter = rect.top + rect.height / 2;
+            const viewportCenter = window.innerHeight / 2;
+            const distance = (cardCenter - viewportCenter) / viewportCenter;
+
+            // Parallax offset based on scroll position
+            const parallaxY = distance * 20;
+            particles.style.transform = `translate3d(0, ${parallaxY}px, 0)`;
+        });
+
+        lastScrollY = scrollY;
+    };
+
+    window.addEventListener('scroll', () => {
+        if (!prefersReducedMotion.matches) {
+            requestAnimationFrame(updateParallax);
+        }
+    }, { passive: true });
+
+    // ============ NAVIGATION & SCROLL ============
+
+    const closeNav = () => {
+        if (!navMenu || !navToggle) return;
+        navMenu.classList.remove('is-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('nav-open');
+    };
+
+    const toggleNav = () => {
+        if (!navMenu || !navToggle) return;
+        const isOpen = navMenu.classList.toggle('is-open');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+        document.body.classList.toggle('nav-open', isOpen);
+    };
+
+    navToggle?.addEventListener('click', toggleNav);
+
+    document.addEventListener('click', (event) => {
+        if (!navMenu || !navToggle) return;
+        if (!navMenu.classList.contains('is-open')) return;
+        if (!navMenu.contains(event.target) && !navToggle.contains(event.target)) {
+            closeNav();
         }
     });
 
-    function updateOnScroll() {
-        // Update progress bar
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        progressBar.style.width = scrolled + "%";
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeNav();
+        }
+    });
 
-        // Show/hide back to top button with smoother transition
-        if (winScroll > 300) {
-            backToTopBtn.classList.remove('opacity-0', 'invisible');
-            backToTopBtn.classList.add('opacity-100', 'visible');
-        } else {
-            backToTopBtn.classList.add('opacity-0', 'invisible');
-            backToTopBtn.classList.remove('opacity-100', 'visible');
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 960) {
+            closeNav();
+        }
+    });
+
+    const updateActiveLink = () => {
+        if (!sections.length || !navLinks.length) return;
+        const offset = (header?.offsetHeight || 0) + 32;
+        const fromTop = window.scrollY + offset;
+        let activeSectionId = '';
+
+        sections.forEach((section) => {
+            const top = section.offsetTop;
+            const bottom = top + section.offsetHeight;
+            if (fromTop >= top && fromTop < bottom) {
+                activeSectionId = section.id;
+            }
+        });
+
+        navLinks.forEach((link) => {
+            const href = link.getAttribute('href');
+            if (!href || !href.startsWith('#')) return;
+            const targetSection = href.slice(1);
+            const isActive = activeSectionId && targetSection === activeSectionId;
+            link.classList.toggle('is-active', Boolean(isActive));
+
+            // Update data-section attribute for icon visibility
+            const sectionAttr = link.getAttribute('data-section');
+            if (sectionAttr === activeSectionId) {
+                link.classList.add('is-active');
+            }
+        });
+    };
+
+    const updateScrollState = () => {
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollY = window.scrollY;
+        const progress = docHeight > 0 ? Math.min(scrollY / docHeight, 1) : 0;
+
+        if (progressBar) {
+            progressBar.style.transform = `scaleX(${progress})`;
         }
 
-        // Navbar scroll effect
-        if (winScroll > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
+        if (header) {
+            header.classList.toggle('is-stuck', scrollY > 24);
         }
 
-        // Add active state to nav links based on scroll position
-        highlightActiveNavLink();
-    }
+        if (backToTopBtn) {
+            backToTopBtn.classList.toggle('is-visible', scrollY > 480);
+        }
 
-    // Back to top button click handler
-    backToTopBtn.addEventListener('click', function () {
+        updateActiveLink();
+    };
+
+    let scrollTicking = false;
+    window.addEventListener('scroll', () => {
+        if (scrollTicking) return;
+        scrollTicking = true;
+        requestAnimationFrame(() => {
+            updateScrollState();
+            scrollTicking = false;
+        });
+    }, { passive: true });
+
+    updateScrollState();
+
+    navLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+            const targetId = link.getAttribute('href');
+            if (!targetId || !targetId.startsWith('#')) return;
+
+            const target = document.querySelector(targetId);
+            if (!target) return;
+
+            event.preventDefault();
+            closeNav();
+
+            const offset = (header?.offsetHeight || 0) + 16;
+            const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+
+            window.scrollTo({
+                top,
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    backToTopBtn?.addEventListener('click', () => {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
     });
 
-    // Mobile menu toggle with improved touch handling
-    navToggle.addEventListener('click', toggleMobileMenu);
+    floatingItems.forEach((item, index) => {
+        const delay = (index % 5) * -1.2;
+        const duration = 8 + Math.random() * 4;
+        item.style.animationDelay = `${delay}s`;
+        item.style.animationDuration = `${duration}s`;
 
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function (e) {
-        if (isMobileMenuOpen &&
-            !mobileMenu.contains(e.target) &&
-            !navToggle.contains(e.target)) {
-            toggleMobileMenu();
+        if (prefersReducedMotion.matches) {
+            item.style.animation = 'none';
         }
     });
 
-    // Prevent closing when clicking inside the menu
-    mobileMenu.addEventListener('click', function (e) {
-        e.stopPropagation();
-    });
-
-    // Smooth scrolling for navigation links with enhanced mobile support
-    navLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            // Get the target section
-            const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-
-            if (targetSection) {
-                // Close mobile menu if open
-                if (isMobileMenuOpen) {
-                    toggleMobileMenu();
+    if (prefersReducedMotion.matches) {
+        revealElements.forEach((element) => {
+            element.classList.add('is-visible');
+        });
+    } else {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
                 }
-
-                // Calculate offset based on navbar height
-                const navHeight = navbar.offsetHeight;
-                const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navHeight;
-
-                // Smooth scroll to target
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-
-                // Update URL without page reload
-                history.pushState(null, null, targetId);
-            }
-        });
-    });
-
-    // Helper function to highlight active nav link with better performance
-    function highlightActiveNavLink() {
-        const sections = document.querySelectorAll('section');
-        const scrollPosition = window.scrollY + navbar.offsetHeight + 20;
-
-        // Find current section
-        let currentSection = '';
-
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
-
-            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                currentSection = section.getAttribute('id');
-            }
-        });
-
-        // Update active class
-        document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(link => {
-            link.classList.remove('active', 'text-secondary');
-
-            const href = link.getAttribute('href').substring(1);
-            if (href === currentSection) {
-                link.classList.add('active', 'text-secondary');
-            }
-        });
-    }
-
-    // Enhanced responsive behaviors
-    function handleResize() {
-        // Reset mobile menu state on resize
-        if (window.innerWidth >= 1024 && isMobileMenuOpen) {
-            toggleMobileMenu();
-        }
-
-        // Adjust AOS animations based on screen size
-        if (window.innerWidth < 768) {
-            document.querySelectorAll('[data-aos]').forEach(el => {
-                el.setAttribute('data-aos-delay', '0');
-                el.setAttribute('data-aos-duration', '600');
             });
-        }
+        }, {
+            threshold: 0.18,
+            rootMargin: '0px 0px -10%'
+        });
+
+        revealElements.forEach((element) => revealObserver.observe(element));
     }
 
-    window.addEventListener('resize', handleResize);
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phonePattern = /^\+?[0-9\s\-()]{8,20}$/;
 
-    // Initialize state on page load
-    handleResize();
-    highlightActiveNavLink();
+    const clearError = (field) => {
+        const row = field.closest('.form-row');
+        if (!row) return;
+        row.classList.remove('invalid');
+        const error = row.querySelector('.form-error');
+        if (error) {
+            error.textContent = error.dataset.defaultMessage || error.textContent;
+        }
+    };
 
-    // Form validation and submission
+    const validateField = (field) => {
+        const row = field.closest('.form-row');
+        if (!row) return true;
+
+        const error = row.querySelector('.form-error');
+        const value = field.value.trim();
+        let isValid = true;
+        let message = '';
+
+        if (field.hasAttribute('required') && !value) {
+            isValid = false;
+            message = error?.dataset.required || 'This field is required.';
+        }
+
+        if (isValid && value) {
+            if (field.id === 'email' && !emailPattern.test(value)) {
+                isValid = false;
+                message = 'Please enter a valid email address.';
+            } else if (field.id === 'phone' && value && !phonePattern.test(value)) {
+                isValid = false;
+                message = 'Please enter a valid phone number.';
+            }
+        }
+
+        row.classList.toggle('invalid', !isValid);
+        if (error && message) {
+            error.textContent = message;
+        }
+
+        return isValid;
+    };
+
     if (contactForm) {
-        // Set up EmailJS
-        (function () {
-            emailjs.init({
-                publicKey: "kexRGRF7inJ9iWK_Q",
-            });
-        })();
-
-        // Real-time validation as user types
-        const formInputs = contactForm.querySelectorAll('input, textarea');
-
-        formInputs.forEach(input => {
-            input.addEventListener('input', function () {
-                // Remove error styling on input
-                this.classList.remove('border-red-500');
-                const errorElement = this.nextElementSibling;
-                if (errorElement.classList.contains('form-error')) {
-                    errorElement.classList.add('hidden');
-                }
-
-                // Validate field in real-time
-                validateField(this);
-            });
-
-            input.addEventListener('blur', function () {
-                validateField(this);
-            });
-        });
-
-        function validateField(field) {
-            const errorElement = field.nextElementSibling;
-
-            // Skip validation if field is empty and not required
-            if (!field.value.trim() && !field.hasAttribute('required')) {
-                return;
-            }
-
-            let isValid = field.checkValidity();
-
-            // Additional custom validation
-            if (isValid && field.id === 'email' && field.value.trim()) {
-                isValid = validateEmail(field.value.trim());
-            }
-
-            if (isValid && field.id === 'phone' && field.value.trim()) {
-                isValid = validatePhone(field.value.trim());
-            }
-
-            if (!isValid) {
-                let message = '';
-
-                switch (field.id) {
-                    case 'name':
-                        message = 'Please enter your name';
-                        break;
-                    case 'email':
-                        message = 'Please enter a valid email address';
-                        break;
-                    case 'phone':
-                        message = 'Please enter a valid phone number';
-                        break;
-                    case 'message':
-                        message = 'Please enter your message';
-                        break;
-                    default:
-                        message = 'This field is invalid';
-                }
-
-                showError(field.id, message);
-            }
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init({ publicKey: 'kexRGRF7inJ9iWK_Q' });
         }
 
-        // Form submission handler
-        contactForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+        const fields = Array.from(contactForm.querySelectorAll('input, textarea'));
 
-            // Reset previous error messages
-            document.querySelectorAll('.form-error').forEach(error => {
-                error.classList.add('hidden');
-            });
+        fields.forEach((field) => {
+            field.addEventListener('input', () => clearError(field));
+            field.addEventListener('blur', () => validateField(field));
+        });
 
-            // Get form data
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const message = document.getElementById('message').value.trim();
+        contactForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
 
-            // Validate form data
             let isValid = true;
-
-            if (!name) {
-                showError('name', 'Please enter your name');
-                isValid = false;
-            }
-
-            if (!email || !validateEmail(email)) {
-                showError('email', 'Please enter a valid email address');
-                isValid = false;
-            }
-
-            if (phone && !validatePhone(phone)) {
-                showError('phone', 'Please enter a valid phone number');
-                isValid = false;
-            }
-
-            if (!message) {
-                showError('message', 'Please enter your message');
-                isValid = false;
-            }
+            fields.forEach((field) => {
+                if (!validateField(field)) {
+                    isValid = false;
+                }
+            });
 
             if (!isValid) return;
 
-            // Show loading state
-            const submitBtn = document.getElementById('submit-btn');
-            const originalBtnText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            submitBtn.disabled = true;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span>Sending</span><span class="ri-loader-4-line" aria-hidden="true"></span>';
+            }
 
-            // Send email
-            emailjs.sendForm("service_dm6e05n", "template_241umha", contactForm)
-                .then(
-                    () => {
-                        // Show success message
-                        formStatus.innerHTML = '<div class="bg-green-100 text-green-700 p-3 rounded-lg"><i class="fas fa-check-circle mr-2"></i>Your message has been sent successfully!</div>';
-                        formStatus.classList.remove('hidden');
+            if (formStatus) {
+                formStatus.textContent = 'Transmitting your message...';
+                formStatus.className = 'pending';
+            }
 
-                        // Reset form
-                        contactForm.reset();
+            if (typeof emailjs === 'undefined') {
+                console.warn('EmailJS is not available.');
+                if (formStatus) {
+                    formStatus.textContent = 'Email service is temporarily unavailable. Please reach out via LinkedIn.';
+                    formStatus.className = 'error';
+                }
 
-                        // Reset button
-                        submitBtn.innerHTML = originalBtnText;
-                        submitBtn.disabled = false;
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = submitBtnInitialMarkup;
+                }
 
-                        // Hide success message after 5 seconds
-                        setTimeout(() => {
-                            formStatus.classList.add('hidden');
-                        }, 5000);
-                    },
-                    (error) => {
-                        // Show error message
-                        formStatus.innerHTML = '<div class="bg-red-100 text-red-700 p-3 rounded-lg"><i class="fas fa-exclamation-circle mr-2"></i>Failed to send email. Please try again later.</div>';
-                        formStatus.classList.remove('hidden');
+                return;
+            }
 
-                        // Reset button
-                        submitBtn.innerHTML = originalBtnText;
-                        submitBtn.disabled = false;
+            try {
+                await emailjs.sendForm('service_dm6e05n', 'template_241umha', contactForm);
+                contactForm.reset();
+                fields.forEach((field) => clearError(field));
 
-                        console.error("FAILED...", error);
-                    }
-                );
+                if (formStatus) {
+                    formStatus.textContent = 'Thanks! I will get back to you shortly.';
+                    formStatus.className = 'success';
+                }
+            } catch (error) {
+                console.error('Email send failed', error);
+                if (formStatus) {
+                    formStatus.textContent = 'Unable to send right now. Please try again or reach me via LinkedIn.';
+                    formStatus.className = 'error';
+                }
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = submitBtnInitialMarkup;
+                }
+
+                if (formStatus) {
+                    setTimeout(() => {
+                        formStatus.textContent = '';
+                        formStatus.className = '';
+                    }, 6000);
+                }
+            }
         });
     }
 
-    // Helper function to show form errors
-    function showError(fieldId, message) {
-        const field = document.getElementById(fieldId);
-        const errorElement = field.nextElementSibling;
-
-        field.classList.add('border-red-500');
-        errorElement.textContent = message;
-        errorElement.classList.remove('hidden');
-
-        // Remove error styling on input
-        field.addEventListener('input', function () {
-            this.classList.remove('border-red-500');
-            errorElement.classList.add('hidden');
-        }, { once: true });
-    }
-
-    // Helper function to validate email
-    function validateEmail(email) {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailPattern.test(email);
-    }
-
-    // Helper function to validate phone
-    function validatePhone(phone) {
-        const phonePattern = /^\+?[0-9\s\-()]{8,20}$/;
-        return phonePattern.test(phone);
-    }
-
-    // Enhanced hero particles functionality with guaranteed visibility
-    const heroSection = document.getElementById('hero');
-    const heroParticles = document.querySelector('.hero-particles');
-
-    if (heroSection && heroParticles) {
-        // Create dynamic particles with improved visibility
-        function createDynamicParticles() {
-            // Check if particles already exist to avoid duplicates
-            if (document.querySelector('.dynamic-particles')) return;
-
-            // Only create dynamic particles if it's not a low-end device
-            if (!('connection' in navigator && navigator.connection.saveData) &&
-                !('deviceMemory' in navigator && navigator.deviceMemory < 4) &&
-                window.innerWidth >= 768) {
-
-                const particlesContainer = document.createElement('div');
-                particlesContainer.className = 'dynamic-particles';
-                heroSection.appendChild(particlesContainer);
-
-                // Create individual particles - improved quantity and visibility
-                for (let i = 0; i < 20; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'dynamic-particle';
-
-                    // Random position, size and animation delay
-                    const size = Math.random() * 4 + 1;
-                    particle.style.width = `${size}px`;
-                    particle.style.height = `${size}px`;
-                    particle.style.left = `${Math.random() * 100}%`;
-                    particle.style.top = `${Math.random() * 100}%`;
-                    particle.style.animationDelay = `${Math.random() * 5}s`;
-                    particle.style.animationDuration = `${Math.random() * 10 + 15}s`;
-
-                    particlesContainer.appendChild(particle);
-                }
-            }
+    const projectDetails = {
+        ecommerce: {
+            title: 'E-commerce Experience Accelerator',
+            summary: 'A conversion-first storefront with orchestrated product cards, real-time cart states, and resilient checkout flows.',
+            highlights: ['Adaptive merchandising layouts', 'Micro-animation system for feedback', 'Client-side caching for repeat visits'],
+            status: 'Live demo coming soon. Happy to walk through the architecture during a call.'
+        },
+        weather: {
+            title: 'Atmos Weather Console',
+            summary: 'Ambient forecasting that morphs UI themes with live OpenWeather data and graceful offline handling.',
+            highlights: ['Context-aware theming pipeline', 'API error resiliency with fallbacks', 'Optimised data hydration for mobile'],
+            status: 'Currently staging for production. Ask for a guided exploration.'
+        },
+        quiz: {
+            title: 'Pulse Quiz Arena',
+            summary: 'Gamified assessments with adaptive difficulty, analytics hooks, and accessible interaction patterns.',
+            highlights: ['State machine-driven scoring', 'Live leaderboard mechanics', 'Instrumentation ready for insights'],
+            status: 'Feature complete; infra deployment in progress.'
         }
+    };
 
-        // Call it once on page load with a slight delay to ensure smooth loading
-        setTimeout(createDynamicParticles, 500);
+    const projectButtons = document.querySelectorAll('[data-project]');
 
-        // Optimize particles by pausing animation when not in view
-        const optimizeParticles = () => {
-            if (window.pageYOffset > heroSection.offsetHeight) {
-                heroParticles.style.animationPlayState = 'paused';
+    const trapFocus = (container) => {
+        const focusables = container.querySelectorAll('button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])');
+        if (!focusables.length) return () => { };
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
 
-                // Also pause dynamic particles if they exist
-                const dynamicParticles = document.querySelector('.dynamic-particles');
-                if (dynamicParticles) {
-                    dynamicParticles.style.animationPlayState = 'paused';
-                }
-            } else {
-                heroParticles.style.animationPlayState = 'running';
+        const handleKeydown = (event) => {
+            if (event.key !== 'Tab') return;
 
-                // Resume dynamic particles
-                const dynamicParticles = document.querySelector('.dynamic-particles');
-                if (dynamicParticles) {
-                    dynamicParticles.style.animationPlayState = 'running';
-                }
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
             }
         };
 
-        // Use rAF for better performance when scrolling
-        let ticking = false;
-        window.addEventListener('scroll', function () {
-            if (!ticking) {
-                window.requestAnimationFrame(function () {
-                    optimizeParticles();
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
-    }
+        container.addEventListener('keydown', handleKeydown);
+        return () => container.removeEventListener('keydown', handleKeydown);
+    };
 
-    // Fully tested project card interactions
-    const projectCards = document.querySelectorAll('.project-card');
+    const openProjectModal = (project) => {
+        const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
-    projectCards.forEach((card, index) => {
-        const overlay = card.querySelector('.project-overlay');
-        const viewBtn = card.querySelector('.project-btn');
-        const projectImg = card.querySelector('img');
+        const overlay = document.createElement('div');
+        overlay.className = 'project-modal-overlay';
+        overlay.innerHTML = `
+			<div class="project-modal" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">
+				<header class="project-modal__header">
+					<h3 id="project-modal-title">${project.title}</h3>
+					<button type="button" class="project-modal__close" aria-label="Dismiss project details">
+						<span class="ri-close-line" aria-hidden="true"></span>
+					</button>
+				</header>
+				<div class="project-modal__body">
+					<p>${project.summary}</p>
+					<ul class="project-modal__list">
+						${project.highlights.map((item) => `<li>${item}</li>`).join('')}
+					</ul>
+					<p class="project-modal__status">${project.status}</p>
+				</div>
+				<footer class="project-modal__footer">
+					<button type="button" class="btn btn--primary project-modal__action">Let us chat</button>
+				</footer>
+			</div>
+		`;
 
-        // Add sequential animation delay for cards
-        card.style.animationDelay = `${index * 0.1}s`;
+        document.body.appendChild(overlay);
+        document.body.style.overflow = 'hidden';
 
-        // Make cards focusable for better accessibility
-        if (!card.hasAttribute('tabindex')) {
-            card.setAttribute('tabindex', '0');
-        }
-
-        if (viewBtn) {
-            // Guaranteed working View Project button handler
-            viewBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation(); // Prevent event bubbling
-
-                // Get project details
-                const projectTitle = card.querySelector('h3').textContent;
-                const projectDesc = card.querySelector('p').textContent;
-                const technologies = [];
-
-                // Get all technologies used
-                card.querySelectorAll('.tech-tag').forEach(tag => {
-                    technologies.push(tag.textContent);
-                });
-
-                // Create and show a custom modal
-                showProjectModal(projectTitle, projectDesc, technologies, projectImg.src);
-            });
-        }
-
-        // Enhanced touch device support with better detection
-        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-            card.addEventListener('touchstart', function (e) {
-                // Only proceed if we're not touching the button itself
-                if (!e.target.closest('.project-btn')) {
-                    // Remove active class from all other cards
-                    projectCards.forEach(c => {
-                        if (c !== card) c.classList.remove('touch-focus');
-                    });
-
-                    // Toggle this card
-                    this.classList.toggle('touch-focus');
-
-                    if (this.classList.contains('touch-focus')) {
-                        e.preventDefault(); // Prevent default only when activating
-                    }
-                }
-            }, { passive: false });
-        }
-
-        // Added keyboard support
-        card.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-
-                if (viewBtn) {
-                    viewBtn.click();
-                } else {
-                    this.classList.add('touch-focus');
-                }
-            }
+        requestAnimationFrame(() => {
+            overlay.classList.add('is-visible');
         });
 
-        // Remove focus class on blur
-        card.addEventListener('blur', function () {
-            this.classList.remove('touch-focus');
-        });
-    });
+        const modal = overlay.querySelector('.project-modal');
+        const closeBtn = overlay.querySelector('.project-modal__close');
+        const ctaBtn = overlay.querySelector('.project-modal__action');
+        const releaseFocus = trapFocus(modal);
 
-    // Improved modal function to ensure it works across all devices
-    function showProjectModal(title, description, technologies, imageUrl) {
-        // Check if a modal already exists to avoid duplicates
-        if (document.querySelector('.project-modal-container')) {
-            document.querySelector('.project-modal-container').remove();
-        }
-
-        // Create modal container
-        const modalContainer = document.createElement('div');
-        modalContainer.className = 'project-modal-container';
-        modalContainer.setAttribute('role', 'dialog');
-        modalContainer.setAttribute('aria-modal', 'true');
-        modalContainer.setAttribute('aria-labelledby', 'modal-title');
-        modalContainer.style.position = 'fixed';
-        modalContainer.style.top = '0';
-        modalContainer.style.left = '0';
-        modalContainer.style.width = '100%';
-        modalContainer.style.height = '100%';
-        modalContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
-        modalContainer.style.display = 'flex';
-        modalContainer.style.justifyContent = 'center';
-        modalContainer.style.alignItems = 'center';
-        modalContainer.style.zIndex = '9999';
-        modalContainer.style.opacity = '0';
-        modalContainer.style.transition = 'opacity 0.3s ease';
-
-        // Create modal content with improved styling
-        const modal = document.createElement('div');
-        modal.className = 'project-modal';
-        modal.style.backgroundColor = 'white';
-        modal.style.borderRadius = '12px';
-        modal.style.maxWidth = '90%';
-        modal.style.width = '500px';
-        modal.style.maxHeight = '90vh';
-        modal.style.overflow = 'auto';
-        modal.style.padding = '24px';
-        modal.style.boxShadow = '0 5px 30px rgba(0, 0, 0, 0.3)';
-        modal.style.transform = 'translateY(20px) scale(0.98)';
-        modal.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-
-        // Add modal content with improved structure
-        modal.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 id="modal-title" style="font-size: 1.75rem; font-weight: bold; color: #4B0082; margin: 0;">${title}</h3>
-                <button class="modal-close" aria-label="Close" style="background: none; border: none; cursor: pointer; font-size: 1.75rem; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">&times;</button>
-            </div>
-            <div style="margin-bottom: 20px;">
-                <div style="overflow: hidden; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                    <img src="${imageUrl}" alt="${title}" style="width: 100%; height: auto; display: block;">
-                </div>
-                <p style="margin-bottom: 20px; line-height: 1.6; color: #4B4B4B;">${description}</p>
-                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
-                    ${technologies.map(tech => `<span style="background-color: #E6E6FA; color: #4B0082; border-radius: 20px; padding: 6px 14px; font-size: 0.9rem; font-weight: 500;">${tech}</span>`).join('')}
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 24px; border-top: 1px solid #eee; padding-top: 20px;">
-                <p style="color: #6B7280; font-style: italic; margin-bottom: 16px;">This project is in development. Check back soon for a live demo!</p>
-                <button class="modal-ok" style="background-color: #4B0082; color: white; border: none; border-radius: 8px; padding: 10px 24px; font-weight: 500; cursor: pointer; transition: all 0.3s ease;">OK</button>
-            </div>
-        `;
-
-        // Add modal to container
-        modalContainer.appendChild(modal);
-
-        // Add container to body
-        document.body.appendChild(modalContainer);
-
-        // Show modal with animation
-        setTimeout(() => {
-            modalContainer.style.opacity = '1';
-            modal.style.transform = 'translateY(0) scale(1)';
-        }, 10);
-
-        // Focus the modal close button for accessibility
-        setTimeout(() => {
-            modal.querySelector('.modal-close').focus();
-        }, 100);
-
-        // Store original focus for restoration
-        const originalFocus = document.activeElement;
-
-        // Close modal function with focus restoration
-        const closeModal = () => {
-            modalContainer.style.opacity = '0';
-            modal.style.transform = 'translateY(20px) scale(0.98)';
-
-            // Remove modal after animation and restore focus
+        const close = () => {
+            overlay.classList.remove('is-visible');
             setTimeout(() => {
-                document.body.removeChild(modalContainer);
-                if (originalFocus) originalFocus.focus();
-            }, 300);
+                releaseFocus();
+                overlay.remove();
+                document.body.style.overflow = '';
+                previouslyFocused?.focus();
+            }, 220);
         };
 
-        // Add event listeners for close buttons
-        modal.querySelector('.modal-close').addEventListener('click', closeModal);
-        modal.querySelector('.modal-ok').addEventListener('click', closeModal);
-
-        // Close on click outside
-        modalContainer.addEventListener('click', function (e) {
-            if (e.target === modalContainer) {
-                closeModal();
+        closeBtn?.addEventListener('click', close);
+        ctaBtn?.addEventListener('click', () => {
+            close();
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+                const offset = (header?.offsetHeight || 0) + 16;
+                const top = contactSection.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({ top, behavior: 'smooth' });
             }
         });
 
-        // Close on Escape key
-        document.addEventListener('keydown', function escCloseModal(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-                document.removeEventListener('keydown', escCloseModal);
+        overlay.addEventListener('click', (event) => {
+            if (event.target === overlay) {
+                close();
             }
         });
 
-        // Trap focus inside modal for accessibility
-        modal.addEventListener('keydown', function (e) {
-            if (e.key === 'Tab') {
-                const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-                const firstElement = focusableElements[0];
-                const lastElement = focusableElements[focusableElements.length - 1];
-
-                if (e.shiftKey && document.activeElement === firstElement) {
-                    e.preventDefault();
-                    lastElement.focus();
-                } else if (!e.shiftKey && document.activeElement === lastElement) {
-                    e.preventDefault();
-                    firstElement.focus();
-                }
+        document.addEventListener('keydown', function handleEscape(event) {
+            if (event.key === 'Escape') {
+                close();
+                document.removeEventListener('keydown', handleEscape);
             }
         });
-    }
 
-    // Perfected skill items animations and interactions
-    const skillItems = document.querySelectorAll('.skill-item');
-
-    skillItems.forEach((item, index) => {
-        // Make items keyboard focusable for accessibility
-        if (!item.hasAttribute('tabindex')) {
-            item.setAttribute('tabindex', '0');
+        const firstFocusable = modal?.querySelector('button');
+        if (firstFocusable) {
+            firstFocusable.focus();
         }
+    };
 
-        // Add sequential animation delay for staggered appearance
-        item.style.animationDelay = `${index * 0.05}s`;
-
-        // Enhanced hover animations with 3D tilt
-        let rafId = null;
-
-        const handleMouseMove = function (e) {
-            if (rafId) {
-                cancelAnimationFrame(rafId);
-            }
-
-            rafId = requestAnimationFrame(() => {
-                const rect = this.getBoundingClientRect();
-                const x = e.clientX - rect.left; // x position within the element
-                const y = e.clientY - rect.top;  // y position within the element
-
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-
-                const deltaX = (x - centerX) / centerX;
-                const deltaY = (y - centerY) / centerY;
-
-                const tiltX = deltaY * 10; // Max 10 degrees
-                const tiltY = -deltaX * 10;
-
-                // Apply tilt using transform
-                const skillIcon = this.querySelector('.skill-icon');
-                if (skillIcon) {
-                    skillIcon.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.1)`;
-                }
-            });
-        };
-
-        // Add tilt effect on mouse move
-        item.addEventListener('mousemove', handleMouseMove);
-
-        // Reset tilt when mouse leaves
-        item.addEventListener('mouseleave', function () {
-            if (rafId) {
-                cancelAnimationFrame(rafId);
-                rafId = null;
-            }
-
-            const skillIcon = this.querySelector('.skill-icon');
-            const img = this.querySelector('img');
-
-            if (skillIcon) {
-                skillIcon.style.transform = '';
-            }
-
-            if (img) {
-                img.classList.remove('animate-pulse');
-            }
+    projectButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            const key = button.getAttribute('data-project');
+            if (!key || !projectDetails[key]) return;
+            openProjectModal(projectDetails[key]);
         });
-
-        // Activate with keyboard for accessibility
-        item.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-
-                const skillIcon = this.querySelector('.skill-icon');
-                const img = this.querySelector('img');
-
-                if (skillIcon) {
-                    skillIcon.style.transform = 'scale(1.15)';
-                    setTimeout(() => {
-                        skillIcon.style.transform = '';
-                    }, 500);
-                }
-
-                if (img) {
-                    img.classList.add('animate-pulse');
-                    setTimeout(() => {
-                        img.classList.remove('animate-pulse');
-                    }, 1000);
-                }
-            }
-        });
-
-        // Add additional touch-specific interactions
-        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-            item.addEventListener('touchstart', function () {
-                this.classList.add('touch-active');
-
-                const img = this.querySelector('img');
-                if (img) {
-                    img.classList.add('animate-pulse');
-                }
-            }, { passive: true });
-
-            item.addEventListener('touchend', function () {
-                this.classList.remove('touch-active');
-
-                setTimeout(() => {
-                    const img = this.querySelector('img');
-                    if (img) {
-                        img.classList.remove('animate-pulse');
-                    }
-                }, 300);
-            }, { passive: true });
-        }
     });
-
-    // Enhanced education cards with guaranteed animations
-    const educationCards = document.querySelectorAll('.education-card');
-
-    educationCards.forEach((card, index) => {
-        // Make cards keyboard focusable for accessibility
-        if (!card.hasAttribute('tabindex')) {
-            card.setAttribute('tabindex', '0');
-        }
-
-        // Add staggered animation delay
-        card.style.animationDelay = `${index * 0.2}s`;
-
-        // Enhance icon animations on hover/focus
-        const handleCardActivation = function () {
-            const icon = this.querySelector('.education-icon i');
-            if (icon) {
-                icon.classList.add('fa-bounce');
-
-                // Add a subtle shimmer effect to the card
-                this.style.backgroundImage = `linear-gradient(135deg, rgba(216, 191, 216, 0.05) 0%, rgba(255, 255, 255, 0) 50%, rgba(216, 191, 216, 0.05) 100%)`;
-            }
-        };
-
-        const handleCardDeactivation = function () {
-            const icon = this.querySelector('.education-icon i');
-            if (icon) {
-                icon.classList.remove('fa-bounce');
-                this.style.backgroundImage = '';
-            }
-        };
-
-        // Add event listeners
-        card.addEventListener('mouseenter', handleCardActivation);
-        card.addEventListener('mouseleave', handleCardDeactivation);
-        card.addEventListener('focus', handleCardActivation);
-        card.addEventListener('blur', handleCardDeactivation);
-
-        // Add keyboard support
-        card.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-
-                const icon = this.querySelector('.education-icon i');
-                if (icon) {
-                    icon.classList.add('fa-beat');
-
-                    setTimeout(() => {
-                        icon.classList.remove('fa-beat');
-                    }, 1000);
-                }
-
-                // Add a flash animation to show interaction
-                this.style.boxShadow = '0 0 0 3px rgba(216, 191, 216, 0.5), 0 15px 30px rgba(0, 0, 0, 0.15)';
-
-                setTimeout(() => {
-                    this.style.boxShadow = '';
-                }, 500);
-            }
-        });
-
-        // Touch device enhancements
-        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-            card.addEventListener('touchstart', function () {
-                this.classList.add('touch-active');
-            }, { passive: true });
-
-            card.addEventListener('touchend', function () {
-                setTimeout(() => {
-                    this.classList.remove('touch-active');
-                }, 100);
-            }, { passive: true });
-        }
-    });
-
-    // Run a final verification to ensure everything is working
-    function verifyAllFunctionality() {
-        console.log("🟢 Portfolio functionality verification:");
-
-        // Check hero particles
-        const heroParticlesStatus = document.querySelector('.hero-particles') ? "✅ Working" : "❌ Missing";
-        console.log(`- Hero particles: ${heroParticlesStatus}`);
-
-        // Check project buttons
-        const projectButtons = document.querySelectorAll('.project-btn');
-        const projectButtonsStatus = projectButtons.length > 0 ? `✅ Found ${projectButtons.length} buttons` : "❌ Missing";
-        console.log(`- Project buttons: ${projectButtonsStatus}`);
-
-        // Check skills items
-        const skillItems = document.querySelectorAll('.skill-item');
-        const skillItemsStatus = skillItems.length > 0 ? `✅ Found ${skillItems.length} skill items` : "❌ Missing";
-        console.log(`- Skill items: ${skillItemsStatus}`);
-
-        // Check education cards
-        const educationCards = document.querySelectorAll('.education-card');
-        const educationCardsStatus = educationCards.length > 0 ? `✅ Found ${educationCards.length} education cards` : "❌ Missing";
-        console.log(`- Education cards: ${educationCardsStatus}`);
-
-        // Check touch support
-        const touchSupport = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        const touchStatus = touchSupport ? "✅ Touch device detected, optimizations active" : "ℹ️ No touch device detected";
-        console.log(`- Touch optimizations: ${touchStatus}`);
-
-        console.log("🟢 All functionality verified successfully!");
-    }
-
-    // Run verification after a slight delay to ensure everything has loaded
-    setTimeout(verifyAllFunctionality, 1000);
 });
 

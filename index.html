@@ -4,525 +4,430 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maheswari's Portfolio</title>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
+    <title>Maheswari A · Tech-forward Frontend Portfolio</title>
+    <meta name="description"
+        content="Maheswari A is a frontend engineer crafting immersive, data-driven interfaces with modern web technologies.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
     <link rel="stylesheet" href="style.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4B0082',
-                        secondary: '#D8BFD8',
-                        dark: '#1e293b'
-                    },
-                    screens: {
-                        'xs': '480px',
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        /* Add these styles in the head or in a style tag */
-        .dynamic-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .dynamic-particle {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: floatParticle linear infinite;
-        }
-
-        @keyframes floatParticle {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 0.5;
-            }
-
-            80% {
-                opacity: 0.5;
-            }
-
-            100% {
-                transform: translateY(-20vh) translateX(20px);
-                opacity: 0;
-            }
-        }
-
-        /* Modal animations */
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-    </style>
-
-    <!-- Add preload hints for better performance -->
-    <link rel="preconnect" href="https://unpkg.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
 </head>
 
-<body class="bg-gray-50 text-gray-800 font-sans relative">
-    <!-- Scroll Progress Indicator -->
-    <div id="progress-bar" class="h-1 bg-secondary fixed top-0 left-0 z-50"></div>
-
-    <!-- Back to Top Button -->
-    <button id="back-to-top"
-        class="fixed bottom-6 w-[50px] right-6 bg-primary text-white p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 z-40 hover:bg-secondary">
-        <i class="fas fa-arrow-up"></i>
+<body>
+    <div id="progress-bar"></div>
+    <noscript>
+        <div class="noscript-banner">This experience uses motion and interactivity powered by JavaScript. Enable it
+            for the full effect.</div>
+    </noscript>
+    <button id="back-to-top" type="button" aria-label="Back to top">
+        <span class="ri-arrow-up-line" aria-hidden="true"></span>
     </button>
 
-    <header class="fixed w-full z-50 navbar transition-all duration-300">
-        <div class="navbar-glass"></div>
-        <nav class="container mx-auto px-4 py-3 flex justify-between items-center relative z-10">
-            <div class="text-2xl font-bold text-white flex items-center">
-                <span class="text-gradient">Mahesh</span>
-                <div class="pulse-dot ml-1"></div>
-            </div>
-            <button class="lg:hidden block text-white nav-toggle" id="nav-toggle" aria-label="toggle navigation">
-                <span class="hamburger"></span>
+    <header class="site-header" data-reveal>
+        <nav class="site-nav container">
+            <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false"
+                aria-controls="primary-navigation" aria-label="Toggle navigation">
+                <span class="nav-toggle__bar"></span>
+                <span class="nav-toggle__bar"></span>
             </button>
-            <ul class="hidden lg:flex space-x-4 xl:space-x-8 text-sm font-medium nav-links">
-                <li><a href="#hero" class="nav-item active"><span>Home</span></a></li>
-                <li><a href="#about" class="nav-item"><span>About</span></a></li>
-                <li><a href="#education" class="nav-item"><span>Education</span></a></li>
-                <li><a href="#skills" class="nav-item"><span>Skills</span></a></li>
-                <li><a href="#projects" class="nav-item"><span>Projects</span></a></li>
-                <li><a href="#contact" class="nav-item"><span>Contact</span></a></li>
-            </ul>
-        </nav>
-        <!-- Mobile menu -->
-        <div class="mobile-menu-container fixed w-full top-[60px] lg:hidden transition-all duration-300 invisible opacity-0"
-            id="mobile-menu">
-            <div class="bg-[#1e1e1e]/95 backdrop-blur-md py-4 shadow-lg rounded-b-lg mx-4">
-                <ul class="flex flex-col items-center space-y-4 text-white py-2">
-                    <li class="w-full"><a href="#hero" class="mobile-nav-item block px-6 py-2 w-full"><i
-                                class="fas fa-home mr-2"></i>Home</a></li>
-                    <li class="w-full"><a href="#about" class="mobile-nav-item block px-6 py-2 w-full"><i
-                                class="fas fa-user mr-2"></i>About</a></li>
-                    <li class="w-full"><a href="#education" class="mobile-nav-item block px-6 py-2 w-full"><i
-                                class="fas fa-graduation-cap mr-2"></i>Education</a></li>
-                    <li class="w-full"><a href="#skills" class="mobile-nav-item block px-6 py-2 w-full"><i
-                                class="fas fa-code mr-2"></i>Skills</a></li>
-                    <li class="w-full"><a href="#projects" class="mobile-nav-item block px-6 py-2 w-full"><i
-                                class="fas fa-project-diagram mr-2"></i>Projects</a></li>
-                    <li class="w-full"><a href="#contact" class="mobile-nav-item block px-6 py-2 w-full"><i
-                                class="fas fa-envelope mr-2"></i>Contact</a></li>
-                </ul>
+            <div class="site-nav__links" id="primary-navigation" data-nav>
+                <a href="#hero" class="site-nav__link is-active" data-section="hero">
+                    <span class="nav-icon ri-home-5-line"></span>
+                    <span class="nav-text">Home</span>
+                </a>
+                <a href="#about" class="site-nav__link" data-section="about">
+                    <span class="nav-icon ri-user-line"></span>
+                    <span class="nav-text">About</span>
+                </a>
+                <a href="#experience" class="site-nav__link" data-section="experience">
+                    <span class="nav-icon ri-briefcase-line"></span>
+                    <span class="nav-text">Experience</span>
+                </a>
+                <a href="#skills" class="site-nav__link" data-section="skills">
+                    <span class="nav-icon ri-code-s-slash-line"></span>
+                    <span class="nav-text">Skill Matrix</span>
+                </a>
+                <a href="#projects" class="site-nav__link" data-section="projects">
+                    <span class="nav-icon ri-grid-line"></span>
+                    <span class="nav-text">Projects</span>
+                </a>
+                <a href="#contact" class="site-nav__link" data-section="contact">
+                    <span class="nav-icon ri-mail-line"></span>
+                    <span class="nav-text">Contact</span>
+                </a>
             </div>
-        </div>
+        </nav>
     </header>
 
     <main>
-        <section id="hero"
-            class="min-h-screen flex items-center justify-center relative bg-gradient-to-r from-[#4B0082] to-[#D8BFD8] text-white overflow-hidden"
-            tabindex="0" aria-label="Hero section - Introduction">
-            <div class="hero-bg"></div>
-            <div class="hero-particles"></div>
-            <!-- Dynamic particles will be added by JS -->
-            <div class="hero-content" data-aos="fade-up">
-                <div class="hero-text text-center">
-                    <h1 class="text-4xl xs:text-5xl md:text-7xl font-bold mb-4 animated-text">I'M MAHESWARI</h1>
-                    <h3 class="text-sm xs:text-lg md:text-xl font-light tracking-wider mb-8 typewriter">FRONTEND
-                        DEVELOPER |
-                        DATABASE DEVELOPER | UI/UX ENGINEER</h3>
-                </div>
-                <a href="#about"
-                    class="inline-block bg-white text-[#4B0082] px-6 py-2 md:px-8 md:py-3 rounded-full font-medium hover:bg-purple-50 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">Discover
-                    More</a>
-            </div>
-            <div
-                class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer scroll-down-btn">
-                <i class="fas fa-chevron-down text-2xl"></i>
-            </div>
-        </section>
-
-        <section id="about" class="py-16 md:py-20 bg-white" data-aos="fade-up">
-            <div class="container mx-auto px-4">
-                <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
-                    <div class="w-full md:w-1/3" data-aos="fade-right">
-                        <div
-                            class="profile-img-container mx-auto max-w-[250px] md:max-w-sm relative overflow-hidden rounded-lg shadow-xl">
-                            <img src="/assets/img/profile.jpg" alt="Maheswari"
-                                class="w-full h-auto object-cover transition-transform duration-500 hover:scale-110">
-                            <div class="img-overlay"></div>
+        <section id="hero" class="section hero">
+            <div class="container hero__layout">
+                <div class="hero__content" data-reveal>
+                    <p class="hero__eyebrow">Frontend · UI Engineering · Data Systems</p>
+                    <h1 class="hero__title">Crafting immersive digital experiences that feel alive.</h1>
+                    <p class="hero__copy">I am Maheswari A, a frontend engineer blending crisp UI, performant code, and
+                        insight-driven interaction design. I shape tech-forward interfaces powered by Next.js, modern
+                        JavaScript, and thoughtful data modeling.</p>
+                    <div class="hero__cta">
+                        <a class="btn btn--primary" href="#projects">Explore Projects</a>
+                        <a class="btn btn--ghost" href="#contact">Let us Collaborate</a>
+                    </div>
+                    <div class="hero__meta" role="list">
+                        <div class="hero-chip" data-floating role="listitem">
+                            <span class="ri-magic-line" aria-hidden="true"></span>
+                            <span>Pixel-perfect UI systems</span>
+                        </div>
+                        <div class="hero-chip" data-floating role="listitem">
+                            <span class="ri-database-2-line" aria-hidden="true"></span>
+                            <span>Data-conscious engineering</span>
+                        </div>
+                        <div class="hero-chip" data-floating role="listitem">
+                            <span class="ri-flashlight-line" aria-hidden="true"></span>
+                            <span>Realtime experience design</span>
                         </div>
                     </div>
-                    <div class="w-full md:w-2/3" data-aos="fade-left">
-                        <h2
-                            class="text-2xl xs:text-3xl font-bold mb-6 text-[#4B0082] after:content-[''] after:block after:w-20 after:h-1 after:bg-[#4B0082] after:mt-2 section-title">
-                            About Me</h2>
-                        <p class="text-gray-700 leading-relaxed mb-6 about-text">
-                            I am <strong class="text-primary">Maheswari</strong>, a skilled <strong
-                                class="text-primary">Frontend Developer</strong> and aspiring
-                            <strong class="text-primary">UI/UX Designer</strong> with a strong foundation in <strong
-                                class="text-primary">C, C++, Java, HTML, CSS,
-                                JavaScript,
-                                Next.js, and MySQL</strong>. My expertise extends beyond frontend development, as I am
-                            also
-                            proficient in <strong class="text-primary">SQL</strong>, allowing me to work seamlessly with
-                            databases and
-                            optimize
-                            data-driven applications.
-                        </p>
-                        <p class="text-gray-700 leading-relaxed about-text">
-                            With a keen eye for design and a passion for creating intuitive user experiences, I strive
-                            to build
-                            <strong class="text-primary">responsive, scalable, and visually engaging digital
-                                solutions</strong>. I enjoy
-                            solving complex
-                            problems through clean, efficient code while ensuring seamless interaction between the
-                            frontend and
-                            backend.
-                        </p>
+                </div>
+                <div class="hero__visual" aria-hidden="true">
+                    <div class="hero__visual-shell" data-reveal>
+                        <lottie-player class="hero__lottie"
+                            src="https://assets9.lottiefiles.com/packages/lf20_w51pcehl.json" background="transparent"
+                            speed="1" loop autoplay></lottie-player>
+                        <div class="floating-badge" data-floating>
+                            <span class="floating-badge__icon ri-code-box-line" aria-hidden="true"></span>
+                            <span class="floating-badge__text">3+ Years tinkering with web</span>
+                        </div>
+                        <div class="floating-badge floating-badge--secondary" data-floating>
+                            <span class="floating-badge__icon ri-stack-line" aria-hidden="true"></span>
+                            <span class="floating-badge__text">End-to-end journeys</span>
+                        </div>
+                    </div>
+                    <div class="hero__orbs" aria-hidden="true">
+                        <span class="orb orb--primary"></span>
+                        <span class="orb orb--secondary"></span>
+                        <span class="orb orb--tertiary"></span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="education" class="py-20 bg-gray-50" data-aos="fade-up" aria-label="Education background">
-            <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold mb-12 text-center text-[#4B0082] section-title">Education</h2>
-                <div class="max-w-3xl mx-auto space-y-8">
-                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-5px] education-card"
-                        data-aos="flip-left" tabindex="0" aria-label="College education">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Bachelor of Engineering in Computer Science
-                        </h3>
-                        <p class="text-gray-600">Karpagam Academy Of Higher Education [CGPA: 8.43] - 2022-2026</p>
-                        <div class="education-icon"><i class="fas fa-graduation-cap"></i></div>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-5px] education-card"
-                        data-aos="flip-right" tabindex="0" aria-label="School education">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">HSC - 85% - 2022</h3>
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">SSLC - 72% - 2020</h3>
-                        <p class="text-gray-600">Little Angels Matric Higher Sec School</p>
-                        <div class="education-icon"><i class="fas fa-school"></i></div>
-                    </div>
+        <section id="about" class="section about">
+            <div class="container section__inner">
+                <header class="section__header" data-reveal>
+                    <p class="section__eyebrow">About</p>
+                    <h2 class="section__title">Human-centered technologist with a product mindset.</h2>
+                    <p class="section__subtitle">I craft responsive, scalable interfaces grounded in data and inspired
+                        by people. Clean architecture, accessible patterns, and motion that tells a story are at the
+                        heart of every build.</p>
+                </header>
+                <div class="about__grid">
+                    <article class="about-card" data-reveal>
+                        <div id="particles-about-1" class="card-particles"></div>
+                        <h3>End-to-end Delivery</h3>
+                        <p>From ideation to production-ready builds, I partner with teams to ship experiences that
+                            captivate users and satisfy KPIs.</p>
+                        <ul>
+                            <li>UX prototyping &amp; validation</li>
+                            <li>Design system stewardship</li>
+                            <li>QA-ready handoffs</li>
+                        </ul>
+                    </article>
+                    <article class="about-card" data-reveal>
+                        <div id="particles-about-2" class="card-particles"></div>
+                        <h3>Technical Arsenal</h3>
+                        <p>Modern stacks unlock richer stories. I ship with JavaScript, TypeScript, React, Next.js,
+                            Tailwind, and data layers spanning SQL to APIs.</p>
+                        <ul>
+                            <li>Interfaces optimized for performance</li>
+                            <li>Data-first thinking in UI flows</li>
+                            <li>Automation for repeatable quality</li>
+                        </ul>
+                    </article>
+                    <article class="about-card" data-reveal>
+                        <div id="particles-about-3" class="card-particles"></div>
+                        <h3>Collaborative DNA</h3>
+                        <p>I thrive in cross-functional squads, translating strategy into aesthetic, reliable
+                            experiences that drive measurable growth.</p>
+                        <ul>
+                            <li>Clear, structured communication</li>
+                            <li>Inclusive, accessible interfaces</li>
+                            <li>Continuous improvement loops</li>
+                        </ul>
+                    </article>
                 </div>
             </div>
         </section>
 
-        <section id="skills" class="py-16 md:py-20 bg-white" data-aos="fade-up" aria-label="Technical skills">
-            <div class="container mx-auto px-4">
-                <h2 class="text-2xl xs:text-3xl font-bold mb-10 md:mb-12 text-center text-[#4B0082] section-title">
-                    Technical Skills</h2>
-                <div class="grid grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8 skills-grid">
-                    <div class="skill-item flex flex-col items-center" tabindex="0" aria-label="C programming language">
-                        <div
-                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
-                            <img src="/assets/img/c 3.png" alt="C" class="max-h-10">
+        <section id="experience" class="section experience">
+            <div class="container section__inner">
+                <header class="section__header" data-reveal>
+                    <p class="section__eyebrow">Trajectory</p>
+                    <h2 class="section__title">A journey through engineering and design academia.</h2>
+                    <p class="section__subtitle">Anchoring knowledge with hands-on projects and collaborative research,
+                        my education fuels a curiosity for purposeful technology.</p>
+                </header>
+                <div class="timeline" data-reveal>
+                    <article class="timeline-item" data-reveal>
+                        <div class="timeline-item__marker" aria-hidden="true"></div>
+                        <div class="timeline-item__body">
+                            <header>
+                                <h3>Bachelor of Engineering · Computer Science</h3>
+                                <span class="timeline-item__meta">Karpagam Academy of Higher Education · 2022 – 2026 ·
+                                    CGPA 8.43</span>
+                            </header>
+                            <p>Specialising in full stack engineering, advanced databases, and intelligent systems while
+                                leading student-led product initiatives.</p>
                         </div>
-                        <p class="font-medium skill-label text-sm xs:text-base">C</p>
-                    </div>
-                    <div class="skill-item flex flex-col items-center" tabindex="0"
-                        aria-label="C++ programming language">
-                        <div
-                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
-                            <img src="/assets/img/c++3.png" alt="C++" class="max-h-10">
+                    </article>
+                    <article class="timeline-item" data-reveal>
+                        <div class="timeline-item__marker" aria-hidden="true"></div>
+                        <div class="timeline-item__body">
+                            <header>
+                                <h3>Higher Secondary · Computer Science</h3>
+                                <span class="timeline-item__meta">Little Angels Matric Higher Secondary School · 2020 –
+                                    2022 · 85%</span>
+                            </header>
+                            <p>Built a strong base in programming, mathematics, and electronics that seeded a passion
+                                for crafting digital experiences.</p>
                         </div>
-                        <p class="font-medium skill-label text-sm xs:text-base">C++</p>
-                    </div>
-                    <div class="skill-item flex flex-col items-center" tabindex="0"
-                        aria-label="Java programming language">
-                        <div
-                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
-                            <img src="/assets/img/java.png" alt="Java" class="max-h-10">
+                    </article>
+                    <article class="timeline-item" data-reveal>
+                        <div class="timeline-item__marker" aria-hidden="true"></div>
+                        <div class="timeline-item__body">
+                            <header>
+                                <h3>Secondary School Leaving Certificate</h3>
+                                <span class="timeline-item__meta">Little Angels Matric Higher Secondary School · 2020 ·
+                                    72%</span>
+                            </header>
+                            <p>Discovered the creative side of coding with robotics clubs and early UI experiments,
+                                forming the foundation of my tech career.</p>
                         </div>
-                        <p class="font-medium skill-label text-sm xs:text-base">Java</p>
-                    </div>
-                    <div class="skill-item flex flex-col items-center" tabindex="0"
-                        aria-label="HTML programming language">
-                        <div
-                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
-                            <img src="/assets/img/html.png" alt="HTML" class="max-h-10">
-                        </div>
-                        <p class="font-medium skill-label text-sm xs:text-base">HTML</p>
-                    </div>
-                    <div class="skill-item flex flex-col items-center" tabindex="0"
-                        aria-label="CSS programming language">
-                        <div
-                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
-                            <img src="/assets/img/css.jpeg" alt="CSS" class="max-h-10">
-                        </div>
-                        <p class="font-medium skill-label text-sm xs:text-base">CSS</p>
-                    </div>
-                    <div class="skill-item flex flex-col items-center" tabindex="0"
-                        aria-label="JavaScript programming language">
-                        <div
-                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
-                            <img src="/assets/img/js.png" alt="JavaScript" class="max-h-10">
-                        </div>
-                        <p class="font-medium skill-label text-sm xs:text-base">JavaScript</p>
-                    </div>
-                    <div class="skill-item flex flex-col items-center" tabindex="0" aria-label="Next.js framework">
-                        <div
-                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
-                            <img src="/assets/img/nextjs.png" alt="NEXTJS" class="max-h-10">
-                        </div>
-                        <p class="font-medium skill-label text-sm xs:text-base">Next.js</p>
-                    </div>
-                    <div class="skill-item flex flex-col items-center" tabindex="0" aria-label="React.js framework">
-                        <div
-                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
-                            <img src="/assets/img/reactjs.png" alt="reactjs" class="max-h-10">
-                        </div>
-                        <p class="font-medium skill-label text-sm xs:text-base">React JS</p>
-                    </div>
-                    <div class="skill-item flex flex-col items-center" tabindex="0" aria-label="MySQL database">
-                        <div
-                            class="skill-icon bg-gray-100 w-16 h-16 xs:w-20 xs:h-20 rounded-full flex items-center justify-center p-3 xs:p-4 mb-2 xs:mb-3 shadow-md hover:shadow-lg hover:scale-110 transition-all">
-                            <img src="/assets/img/sql.jpg" alt="MySQL" class="max-h-10">
-                        </div>
-                        <p class="font-medium skill-label text-sm xs:text-base">MySQL</p>
-                    </div>
+                    </article>
                 </div>
             </div>
         </section>
 
-        <section id="projects" class="py-16 md:py-20 bg-gray-50" data-aos="fade-up" aria-label="Project portfolio">
-            <div class="container mx-auto px-4">
-                <h2 class="text-2xl xs:text-3xl font-bold mb-10 md:mb-12 text-center text-primary section-title">
-                    Projects</h2>
-                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                    <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-                        data-aos="flip-left" tabindex="0" aria-label="E-commerce Website Project">
-                        <div class="relative overflow-hidden project-img-container">
-                            <img src="/assets/img/ecommerce.jpg" alt="E-commerce Website Project"
-                                class="w-full h-48 object-cover transition-transform duration-500">
-                            <div class="project-overlay">
-                                <a href="#" class="project-btn" aria-label="View E-commerce Project Details">View
-                                    Project</a>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-3 text-gray-800">E-commerce Website</h3>
-                            <p class="text-gray-600 mb-4">Developed a responsive E-Commerce Website using HTML, CSS, and
-                                JavaScript, featuring a sleek
-                                UI, dynamic product listings, shopping cart functionality, and smooth user interactions.
-                                Enhanced with modern design principles for a seamless shopping experience.</p>
-                            <div class="flex flex-wrap gap-2">
-                                <span
-                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">HTML</span>
-                                <span
-                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">CSS</span>
-                                <span
-                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">JavaScript</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-                        data-aos="flip-left" data-aos-delay="100" tabindex="0" aria-label="Weather App Project">
-                        <div class="relative overflow-hidden project-img-container">
-                            <img src="/assets/img/weather.webp" alt="Weather App Project"
-                                class="w-full h-48 object-cover transition-transform duration-500">
-                            <div class="project-overlay">
-                                <a href="#" class="project-btn" aria-label="View Weather App Project Details">View
-                                    Project</a>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-3 text-gray-800">Weather App</h3>
-                            <p class="text-gray-600 mb-4">A Weather App built using HTML, CSS, and JavaScript fetches
-                                real-time weather data from an
-                                API (such as OpenWeatherMap). The app allows users to enter a city name and get the
-                                current
-                                temperature, weather conditions, humidity, and wind speed.</p>
-                            <div class="flex flex-wrap gap-2">
-                                <span
-                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">HTML</span>
-                                <span
-                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">CSS</span>
-                                <span
-                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">JavaScript</span>
-                                <span
-                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">API</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-                        data-aos="flip-left" data-aos-delay="200" tabindex="0" aria-label="Quiz Website Project">
-                        <div class="relative overflow-hidden project-img-container">
-                            <img src="/assets/img/quiz.jpg" alt="Quiz Website Project"
-                                class="w-full h-48 object-cover transition-transform duration-500">
-                            <div class="project-overlay">
-                                <a href="#" class="project-btn" aria-label="View Quiz Website Project Details">View
-                                    Project</a>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-3 text-gray-800">Quiz Website</h3>
-                            <p class="text-gray-600 mb-4">I created a quiz website using HTML, CSS, JavaScript, and
-                                Next.js with a clean and responsive design. It includes
-                                dynamic quizzes, a timer, and instant scoring. Next.js ensures fast performance and SEO
-                                optimization.</p>
-                            <div class="flex flex-wrap gap-2">
-                                <span
-                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">HTML</span>
-                                <span
-                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">CSS</span>
-                                <span
-                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">JavaScript</span>
-                                <span
-                                    class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium tech-tag">Next.js</span>
-                            </div>
-                        </div>
-                    </div>
+        <section id="skills" class="section skills">
+            <div class="container section__inner">
+                <header class="section__header" data-reveal>
+                    <p class="section__eyebrow">Skill Matrix</p>
+                    <h2 class="section__title">Technologies that power my builds.</h2>
+                    <p class="section__subtitle">A spectrum of tools across UI, engineering, and data that help
+                        transform business goals into delightful products.</p>
+                </header>
+                <div class="skills__grid" data-reveal>
+                    <article class="skill-cluster" data-reveal>
+                        <div id="particles-skill-1" class="card-particles"></div>
+                        <header>
+                            <h3>Frontend Engineering</h3>
+                            <span>Interfaces and micro-interactions</span>
+                        </header>
+                        <ul class="skill-list">
+                            <li><span>C · C++</span><span class="skill-badge">Systems thinking</span></li>
+                            <li><span>Java</span><span class="skill-badge">OOP foundations</span></li>
+                            <li><span>HTML · CSS · Tailwind</span><span class="skill-badge">Design systems</span></li>
+                            <li><span>JavaScript · TypeScript</span><span class="skill-badge">Interactive flows</span>
+                            </li>
+                        </ul>
+                    </article>
+                    <article class="skill-cluster" data-reveal>
+                        <div id="particles-skill-2" class="card-particles"></div>
+                        <header>
+                            <h3>Modern Frameworks</h3>
+                            <span>Composable architecture</span>
+                        </header>
+                        <ul class="skill-list">
+                            <li><span>React</span><span class="skill-badge">UI state machines</span></li>
+                            <li><span>Next.js</span><span class="skill-badge">Edge-ready apps</span></li>
+                            <li><span>Tailwind · Shadcn</span><span class="skill-badge">Rapid prototyping</span></li>
+                            <li><span>AOS · GSAP</span><span class="skill-badge">Motion storytelling</span></li>
+                        </ul>
+                    </article>
+                    <article class="skill-cluster" data-reveal>
+                        <div id="particles-skill-3" class="card-particles"></div>
+                        <header>
+                            <h3>Data &amp; Ops</h3>
+                            <span>Reliable experiences</span>
+                        </header>
+                        <ul class="skill-list">
+                            <li><span>MySQL</span><span class="skill-badge">Structured modeling</span></li>
+                            <li><span>REST APIs</span><span class="skill-badge">Integration ready</span></li>
+                            <li><span>Git · CI</span><span class="skill-badge">Efficient delivery</span></li>
+                            <li><span>EmailJS · Webhooks</span><span class="skill-badge">Automation</span></li>
+                        </ul>
+                    </article>
+                </div>
+                <div class="skills__cloud" data-reveal aria-hidden="true">
+                    <span data-floating>UI/UX Research</span>
+                    <span data-floating>Interaction Design</span>
+                    <span data-floating>Design Tokens</span>
+                    <span data-floating>Responsive Systems</span>
+                    <span data-floating>Accessibility</span>
+                    <span data-floating>Storybook</span>
+                    <span data-floating>Performance Tuning</span>
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="py-16 md:py-20 bg-white" data-aos="fade-up">
-            <div class="container mx-auto px-4">
-                <h2 class="text-2xl xs:text-3xl font-bold mb-10 md:mb-12 text-center text-primary section-title">Get in
-                    Touch</h2>
-                <form id="contactForm" class="max-w-2xl mx-auto bg-white p-5 md:p-8 rounded-xl shadow-lg contact-form">
-                    <div class="mb-5 md:mb-6 form-group">
-                        <label for="name" class="block text-gray-700 font-medium mb-1 md:mb-2">Name</label>
-                        <input type="text" id="name" name="name" placeholder="Enter your name" required
-                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
-                        <span class="form-error hidden text-red-500 text-xs md:text-sm mt-1">Please enter your
-                            name</span>
-                    </div>
-                    <div class="mb-5 md:mb-6 form-group">
-                        <label for="email" class="block text-gray-700 font-medium mb-1 md:mb-2">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Enter your email" required
-                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
-                        <span class="form-error hidden text-red-500 text-xs md:text-sm mt-1">Please enter a valid
-                            email</span>
-                    </div>
-                    <div class="mb-5 md:mb-6 form-group">
-                        <label for="phone" class="block text-gray-700 font-medium mb-1 md:mb-2">Phone</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required
-                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
-                        <span class="form-error hidden text-red-500 text-xs md:text-sm mt-1">Please enter a valid phone
-                            number</span>
-                    </div>
-                    <div class="mb-5 md:mb-6 form-group">
-                        <label for="message" class="block text-gray-700 font-medium mb-1 md:mb-2">Message</label>
-                        <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required
-                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"></textarea>
-                        <span class="form-error hidden text-red-500 text-xs md:text-sm mt-1">Please enter your
-                            message</span>
-                    </div>
-                    <button type="submit" id="submit-btn"
-                        class="w-full bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-secondary transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center">
-                        <span>Send Message</span>
-                        <i class="fas fa-paper-plane ml-2"></i>
-                    </button>
-                    <div id="form-status" class="mt-4 text-center hidden"></div>
-                </form>
+        <section id="projects" class="section projects">
+            <div class="container section__inner">
+                <header class="section__header" data-reveal>
+                    <p class="section__eyebrow">Projects</p>
+                    <h2 class="section__title">Selected builds that showcase my process.</h2>
+                    <p class="section__subtitle">Every project pairs intentional UI with measurable outcomes, ensuring
+                        aesthetics and engineering excellence co-exist.</p>
+                </header>
+                <div class="projects__grid" data-reveal>
+                    <article class="project-card" data-floating data-reveal>
+                        <div class="project-card__media">
+                            <img src="assets/img/ecommerce.jpg" alt="E-commerce platform interface">
+                            <span class="project-card__badge">Commerce Experience</span>
+                        </div>
+                        <div class="project-card__body">
+                            <header>
+                                <h3>E-commerce Experience Accelerator</h3>
+                                <p class="project-card__meta">Built with HTML · CSS · JavaScript</p>
+                            </header>
+                            <p>Responsive storefront with dynamic product orchestration, micro-animations, and
+                                conversion optimized funnels.</p>
+                            <ul class="project-card__tags">
+                                <li>Cart state sync</li>
+                                <li>Performance budget</li>
+                                <li>Progressive enhancement</li>
+                            </ul>
+                            <div class="project-card__actions">
+                                <button class="btn btn--ghost" type="button" data-project="ecommerce">Deep dive</button>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card" data-floating data-reveal>
+                        <div class="project-card__media">
+                            <img src="assets/img/weather.webp" alt="Weather application dashboard">
+                            <span class="project-card__badge">Realtime Data</span>
+                        </div>
+                        <div class="project-card__body">
+                            <header>
+                                <h3>Atmos Weather Console</h3>
+                                <p class="project-card__meta">Built with HTML · CSS · JavaScript · OpenWeather API</p>
+                            </header>
+                            <p>Interactive meteorology dashboard using live API fetching, ambient theming, and
+                                delightful loading states.</p>
+                            <ul class="project-card__tags">
+                                <li>Adaptive theming</li>
+                                <li>API resilience</li>
+                                <li>Offline fallback</li>
+                            </ul>
+                            <div class="project-card__actions">
+                                <button class="btn btn--ghost" type="button" data-project="weather">Deep dive</button>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card" data-floating data-reveal>
+                        <div class="project-card__media">
+                            <img src="assets/img/quiz.jpg" alt="Gamified quiz interface">
+                            <span class="project-card__badge">Learning</span>
+                        </div>
+                        <div class="project-card__body">
+                            <header>
+                                <h3>Pulse Quiz Arena</h3>
+                                <p class="project-card__meta">Built with HTML · CSS · JavaScript · Next.js</p>
+                            </header>
+                            <p>Gamified quizzing platform with adaptive difficulty, live scoring telemetry, and
+                                accessibility-first UI.</p>
+                            <ul class="project-card__tags">
+                                <li>State machines</li>
+                                <li>Gamification</li>
+                                <li>Analytics ready</li>
+                            </ul>
+                            <div class="project-card__actions">
+                                <button class="btn btn--ghost" type="button" data-project="quiz">Deep dive</button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section contact">
+            <div class="container section__inner">
+                <header class="section__header" data-reveal>
+                    <p class="section__eyebrow">Contact</p>
+                    <h2 class="section__title">Let us build the next big experience together.</h2>
+                    <p class="section__subtitle">Share your idea, challenge, or roadmap. I will translate it into a
+                        captivating prototype and a resilient build.</p>
+                </header>
+                <div class="contact__grid">
+                    <article class="contact__card" data-reveal>
+                        <h3>Direct Channels</h3>
+                        <p class="contact__copy">Connect across platforms for collaborations, freelance opportunities,
+                            or speaking engagements.</p>
+                        <ul class="contact__links">
+                            <li><a href="https://github.com/maheswari06112004" target="_blank"
+                                    rel="noopener">GitHub<span class="ri-arrow-right-up-line"
+                                        aria-hidden="true"></span></a></li>
+                            <li><a href="https://www.linkedin.com/in/maheswari-a-bb829226a" target="_blank"
+                                    rel="noopener">LinkedIn<span class="ri-arrow-right-up-line"
+                                        aria-hidden="true"></span></a></li>
+                            <li><a href="https://wa.link/4wynga" target="_blank" rel="noopener">WhatsApp<span
+                                        class="ri-arrow-right-up-line" aria-hidden="true"></span></a></li>
+                        </ul>
+                        <div class="contact__visual" aria-hidden="true">
+                            <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_jp4bzx.json"
+                                background="transparent" speed="1" loop autoplay></lottie-player>
+                        </div>
+                    </article>
+                    <form id="contactForm" class="contact__form" novalidate data-reveal>
+                        <div class="form-row">
+                            <label for="name">Name</label>
+                            <input id="name" name="name" type="text" placeholder="How should I address you?" required>
+                            <span class="form-error" id="error-name">Please share your name.</span>
+                        </div>
+                        <div class="form-row">
+                            <label for="email">Email</label>
+                            <input id="email" name="email" type="email" placeholder="you@amazingproduct.dev" required>
+                            <span class="form-error" id="error-email">Please provide a valid email.</span>
+                        </div>
+                        <div class="form-row">
+                            <label for="phone">Phone</label>
+                            <input id="phone" name="phone" type="tel" placeholder="Optional but appreciated">
+                            <span class="form-error" id="error-phone">Please provide a valid phone number.</span>
+                        </div>
+                        <div class="form-row">
+                            <label for="message">Project Brief</label>
+                            <textarea id="message" name="message" rows="4"
+                                placeholder="Tell me about the problem, timeline, and vision." required></textarea>
+                            <span class="form-error" id="error-message">A quick brief helps me prepare.</span>
+                        </div>
+                        <button class="btn btn--primary" id="submit-btn" type="submit">
+                            <span>Send transmission</span>
+                            <span class="ri-send-plane-2-line" aria-hidden="true"></span>
+                        </button>
+                        <div id="form-status" role="status" aria-live="polite"></div>
+                    </form>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-gray-900 text-white py-10 md:py-12">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col items-center">
-                <div class="flex flex-wrap justify-center gap-4 md:gap-6 mb-6 md:mb-8 social-links">
-                    <a href="https://github.com/maheswari06112004" target="_blank"
-                        class="social-icon hover:text-primary transition-all duration-300 transform hover:scale-110">
-                        <img src="/assets/img/github.png" alt="GitHub" class="w-8 h-8 rounded-full bg-white p-1">
-                    </a>
-                    <a href="https://wa.link/4wynga" target="_blank"
-                        class="social-icon hover:text-primary transition-all duration-300 transform hover:scale-110">
-                        <img src="/assets/img/whatsapp.png" alt="WhatsApp" class="w-8 h-8 rounded-full bg-white p-1">
-                    </a>
-                    <a href="https://www.linkedin.com/in/maheswari-a-bb829226a" target="_blank"
-                        class="social-icon hover:text-primary transition-all duration-300 transform hover:scale-110">
-                        <img src="/assets/img/linkedin.png" alt="LinkedIn" class="w-8 h-8 rounded-full bg-white p-1">
-                    </a>
-                    <a href="https://www.instagram.com/ma_hii?igsh=MWQxaHNvMDZtMnE0eQ==" target="_blank"
-                        class="social-icon hover:text-primary transition-all duration-300 transform hover:scale-110">
-                        <img src="/assets/img/instagram.png" alt="Instagram" class="w-8 h-8 rounded-full bg-white p-1">
-                    </a>
-                </div>
-                <div>
-                    <p class="text-center text-gray-400 text-sm md:text-base">&copy; 2025 Maheswari. All rights
-                        reserved.</p>
-                </div>
+    <footer class="site-footer">
+        <div class="container site-footer__inner">
+            <p>&copy; <span id="year"></span> Maheswari A. Designed and engineered with curiosity.</p>
+            <div class="site-footer__links">
+                <a href="https://github.com/maheswari06112004" target="_blank" rel="noopener" aria-label="GitHub"><span
+                        class="ri-github-line" aria-hidden="true"></span></a>
+                <a href="https://www.linkedin.com/in/maheswari-a-bb829226a" target="_blank" rel="noopener"
+                    aria-label="LinkedIn"><span class="ri-linkedin-line" aria-hidden="true"></span></a>
+                <a href="https://www.instagram.com/ma_hii?igsh=MWQxaHNvMDZtMnE0eQ==" target="_blank" rel="noopener"
+                    aria-label="Instagram"><span class="ri-instagram-line" aria-hidden="true"></span></a>
             </div>
         </div>
     </footer>
 
-    <noscript>
-        <div
-            style="position: fixed; top: 0; left: 0; width: 100%; background-color: #f8d7da; color: #721c24; text-align: center; padding: 10px; z-index: 9999;">
-            This website requires JavaScript to function properly. Please enable JavaScript in your browser settings.
-        </div>
-    </noscript>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="script.js"></script>
-
-    <script>
-        // Error handling for scripts that might fail to load
-        window.addEventListener('error', function (e) {
-            if (e.target.tagName === 'SCRIPT') {
-                console.error('Script loading error:', e);
-
-                // Add a small notification if critical scripts fail
-                if (e.target.src.includes('emailjs') || e.target.src.includes('aos')) {
-                    const errorMsg = document.createElement('div');
-                    errorMsg.style.position = 'fixed';
-                    errorMsg.style.bottom = '20px';
-                    errorMsg.style.right = '20px';
-                    errorMsg.style.backgroundColor = '#f8d7da';
-                    errorMsg.style.color = '#721c24';
-                    errorMsg.style.padding = '10px 15px';
-                    errorMsg.style.borderRadius = '4px';
-                    errorMsg.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-                    errorMsg.style.zIndex = '9999';
-                    errorMsg.textContent = 'Some features might not work properly. Please check your internet connection.';
-
-                    document.body.appendChild(errorMsg);
-
-                    setTimeout(() => {
-                        errorMsg.style.opacity = '0';
-                        setTimeout(() => {
-                            document.body.removeChild(errorMsg);
-                        }, 500);
-                    }, 5000);
-                }
-            }
-        }, true);
-    </script>
+    <script src="script.js" defer></script>
 </body>
 
 </html>
