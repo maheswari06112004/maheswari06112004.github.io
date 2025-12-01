@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
@@ -7,427 +7,466 @@
     <title>Maheswari A · Tech-forward Frontend Portfolio</title>
     <meta name="description"
         content="Maheswari A is a frontend engineer crafting immersive, data-driven interfaces with modern web technologies.">
+    <meta name="theme-color" content="#0a0a0f">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 
 <body>
-    <div id="progress-bar"></div>
-    <noscript>
-        <div class="noscript-banner">This experience uses motion and interactivity powered by JavaScript. Enable it
-            for the full effect.</div>
-    </noscript>
-    <button id="back-to-top" type="button" aria-label="Back to top">
-        <span class="ri-arrow-up-line" aria-hidden="true"></span>
-    </button>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">Maheswari A</a>
 
-    <header class="site-header" data-reveal>
-        <nav class="site-nav container">
-            <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false"
-                aria-controls="primary-navigation" aria-label="Toggle navigation">
-                <span class="nav-toggle__bar"></span>
-                <span class="nav-toggle__bar"></span>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
-            <div class="site-nav__links" id="primary-navigation" data-nav>
-                <a href="#hero" class="site-nav__link is-active" data-section="hero">
-                    <span class="nav-icon ri-home-5-line"></span>
-                    <span class="nav-text">Home</span>
-                </a>
-                <a href="#about" class="site-nav__link" data-section="about">
-                    <span class="nav-icon ri-user-line"></span>
-                    <span class="nav-text">About</span>
-                </a>
-                <a href="#experience" class="site-nav__link" data-section="experience">
-                    <span class="nav-icon ri-briefcase-line"></span>
-                    <span class="nav-text">Experience</span>
-                </a>
-                <a href="#skills" class="site-nav__link" data-section="skills">
-                    <span class="nav-icon ri-code-s-slash-line"></span>
-                    <span class="nav-text">Skill Matrix</span>
-                </a>
-                <a href="#projects" class="site-nav__link" data-section="projects">
-                    <span class="nav-icon ri-grid-line"></span>
-                    <span class="nav-text">Projects</span>
-                </a>
-                <a href="#contact" class="site-nav__link" data-section="contact">
-                    <span class="nav-icon ri-mail-line"></span>
-                    <span class="nav-text">Contact</span>
-                </a>
-            </div>
-        </nav>
-    </header>
+
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
 
     <main>
-        <section id="hero" class="section hero">
-            <div class="container hero__layout">
-                <div class="hero__content" data-reveal>
-                    <p class="hero__eyebrow">Frontend · UI Engineering · Data Systems</p>
-                    <h1 class="hero__title">Crafting immersive digital experiences that feel alive.</h1>
-                    <p class="hero__copy">I am Maheswari A, a frontend engineer blending crisp UI, performant code, and
-                        insight-driven interaction design. I shape tech-forward interfaces powered by Next.js, modern
-                        JavaScript, and thoughtful data modeling.</p>
-                    <div class="hero__cta">
-                        <a class="btn btn--primary" href="#projects">Explore Projects</a>
-                        <a class="btn btn--ghost" href="#contact">Let us Collaborate</a>
-                    </div>
-                    <div class="hero__meta" role="list">
-                        <div class="hero-chip" data-floating role="listitem">
-                            <span class="ri-magic-line" aria-hidden="true"></span>
-                            <span>Pixel-perfect UI systems</span>
-                        </div>
-                        <div class="hero-chip" data-floating role="listitem">
-                            <span class="ri-database-2-line" aria-hidden="true"></span>
-                            <span>Data-conscious engineering</span>
-                        </div>
-                        <div class="hero-chip" data-floating role="listitem">
-                            <span class="ri-flashlight-line" aria-hidden="true"></span>
-                            <span>Realtime experience design</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="hero__visual" aria-hidden="true">
-                    <div class="hero__visual-shell" data-reveal>
-                        <lottie-player class="hero__lottie"
-                            src="https://assets9.lottiefiles.com/packages/lf20_w51pcehl.json" background="transparent"
-                            speed="1" loop autoplay></lottie-player>
-                        <div class="floating-badge" data-floating>
-                            <span class="floating-badge__icon ri-code-box-line" aria-hidden="true"></span>
-                            <span class="floating-badge__text">3+ Years tinkering with web</span>
-                        </div>
-                        <div class="floating-badge floating-badge--secondary" data-floating>
-                            <span class="floating-badge__icon ri-stack-line" aria-hidden="true"></span>
-                            <span class="floating-badge__text">End-to-end journeys</span>
-                        </div>
-                    </div>
-                    <div class="hero__orbs" aria-hidden="true">
-                        <span class="orb orb--primary"></span>
-                        <span class="orb orb--secondary"></span>
-                        <span class="orb orb--tertiary"></span>
+        <!-- Hero Section -->
+        <section id="home" class="section hero">
+            <div class="container">
+                <div class="hero-content">
+                    <span class="hero-label">FRONTEND ENGINEER</span>
+                    <h1 class="hero-title">
+                        <span class="hero-gradient">Maheswari A</span>
+                    </h1>
+                    <p class="hero-subtitle">Crafting immersive digital experiences that feel alive</p>
+                    <p class="hero-description">
+                        I am a frontend engineer blending crisp UI, performant code, and insight-driven interaction
+                        design.
+                        I shape tech-forward interfaces powered by Next.js, modern JavaScript, and thoughtful data
+                        modeling.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#projects" class="btn btn-primary">
+                            <span>View Projects</span>
+                            <i class="ri-arrow-right-line"></i>
+                        </a>
+                        <a href="#contact" class="btn btn-secondary">
+                            <span>Get In Touch</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="about" class="section about">
-            <div class="container section__inner">
-                <header class="section__header" data-reveal>
-                    <p class="section__eyebrow">About</p>
-                    <h2 class="section__title">Human-centered technologist with a product mindset.</h2>
-                    <p class="section__subtitle">I craft responsive, scalable interfaces grounded in data and inspired
-                        by people. Clean architecture, accessible patterns, and motion that tells a story are at the
-                        heart of every build.</p>
-                </header>
-                <div class="about__grid">
-                    <article class="about-card" data-reveal>
-                        <div id="particles-about-1" class="card-particles"></div>
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label">ABOUT ME</span>
+                    <h2 class="section-title">Human-centered <span class="hero-gradient">technologist</span> with a
+                        product mindset</h2>
+                    <p class="section-description">
+                        I craft responsive, scalable interfaces grounded in data and inspired by people. Clean
+                        architecture,
+                        accessible patterns, and story-driven motion live at the heart of every build.
+                    </p>
+                </div>
+
+                <div class="grid grid-2">
+                    <div class="card">
                         <h3>End-to-end Delivery</h3>
-                        <p>From ideation to production-ready builds, I partner with teams to ship experiences that
-                            captivate users and satisfy KPIs.</p>
-                        <ul>
-                            <li>UX prototyping &amp; validation</li>
-                            <li>Design system stewardship</li>
-                            <li>QA-ready handoffs</li>
-                        </ul>
-                    </article>
-                    <article class="about-card" data-reveal>
-                        <div id="particles-about-2" class="card-particles"></div>
+                        <p>From ideation to production-ready builds, I partner with teams to ship KPI-driven
+                            experiences.</p>
+                    </div>
+
+                    <div class="card">
                         <h3>Technical Arsenal</h3>
-                        <p>Modern stacks unlock richer stories. I ship with JavaScript, TypeScript, React, Next.js,
-                            Tailwind, and data layers spanning SQL to APIs.</p>
-                        <ul>
-                            <li>Interfaces optimized for performance</li>
-                            <li>Data-first thinking in UI flows</li>
-                            <li>Automation for repeatable quality</li>
-                        </ul>
-                    </article>
-                    <article class="about-card" data-reveal>
-                        <div id="particles-about-3" class="card-particles"></div>
+                        <p>JavaScript, TypeScript, React, Next.js, Tailwind, and data layers spanning SQL to APIs.</p>
+                    </div>
+
+                    <div class="card">
                         <h3>Collaborative DNA</h3>
-                        <p>I thrive in cross-functional squads, translating strategy into aesthetic, reliable
-                            experiences that drive measurable growth.</p>
-                        <ul>
-                            <li>Clear, structured communication</li>
-                            <li>Inclusive, accessible interfaces</li>
-                            <li>Continuous improvement loops</li>
-                        </ul>
-                    </article>
+                        <p>Cross-functional squads, inclusive interfaces, and measurable growth are my guiding lights.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Continuous Improvement</h3>
+                        <p>Clear communication, design system stewardship, and QA-ready handoffs keep delivery smooth.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="experience" class="section experience">
-            <div class="container section__inner">
-                <header class="section__header" data-reveal>
-                    <p class="section__eyebrow">Trajectory</p>
-                    <h2 class="section__title">A journey through engineering and design academia.</h2>
-                    <p class="section__subtitle">Anchoring knowledge with hands-on projects and collaborative research,
-                        my education fuels a curiosity for purposeful technology.</p>
-                </header>
-                <div class="timeline" data-reveal>
-                    <article class="timeline-item" data-reveal>
-                        <div class="timeline-item__marker" aria-hidden="true"></div>
-                        <div class="timeline-item__body">
-                            <header>
-                                <h3>Bachelor of Engineering · Computer Science</h3>
-                                <span class="timeline-item__meta">Karpagam Academy of Higher Education · 2022 – 2026 ·
-                                    CGPA 8.43</span>
-                            </header>
-                            <p>Specialising in full stack engineering, advanced databases, and intelligent systems while
-                                leading student-led product initiatives.</p>
-                        </div>
-                    </article>
-                    <article class="timeline-item" data-reveal>
-                        <div class="timeline-item__marker" aria-hidden="true"></div>
-                        <div class="timeline-item__body">
-                            <header>
-                                <h3>Higher Secondary · Computer Science</h3>
-                                <span class="timeline-item__meta">Little Angels Matric Higher Secondary School · 2020 –
-                                    2022 · 85%</span>
-                            </header>
-                            <p>Built a strong base in programming, mathematics, and electronics that seeded a passion
-                                for crafting digital experiences.</p>
-                        </div>
-                    </article>
-                    <article class="timeline-item" data-reveal>
-                        <div class="timeline-item__marker" aria-hidden="true"></div>
-                        <div class="timeline-item__body">
-                            <header>
-                                <h3>Secondary School Leaving Certificate</h3>
-                                <span class="timeline-item__meta">Little Angels Matric Higher Secondary School · 2020 ·
-                                    72%</span>
-                            </header>
-                            <p>Discovered the creative side of coding with robotics clubs and early UI experiments,
-                                forming the foundation of my tech career.</p>
-                        </div>
-                    </article>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label">SKILLS</span>
+                    <h2 class="section-title">Technologies that power my <span class="hero-gradient">builds</span></h2>
+                </div>
+
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <div class="skill-icon"><img src="images/c.png" alt="C"></div>
+                        <div class="skill-name">C</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon"><img src="images/c++.png" alt="C++"></div>
+                        <div class="skill-name">C++</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon"><img src="images/images1.png" alt="HTML"></div>
+                        <div class="skill-name">HTML5</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon"><img src="images/image2.svg" alt="CSS"></div>
+                        <div class="skill-name">CSS3</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon"><img src="images/images3.webp" alt="JavaScript"></div>
+                        <div class="skill-name">JavaScript</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon"><img src="images/React.webp" alt="React"></div>
+                        <div class="skill-name">React.js</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon"><img src="images/next.png" alt="Next.js"></div>
+                        <div class="skill-name">Next.js</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon"><img src="images/mysql.png" alt="MySQL"></div>
+                        <div class="skill-name">MySQL</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon"><img src="images/tailwind-css.png" alt="Tailwind"></div>
+                        <div class="skill-name">Tailwind</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon"><img src="images/figma.png" alt="Figma"></div>
+                        <div class="skill-name">Figma</div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-icon"><img src="images/java.png" alt="Java"></div>
+                        <div class="skill-name">Java</div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="skills" class="section skills">
-            <div class="container section__inner">
-                <header class="section__header" data-reveal>
-                    <p class="section__eyebrow">Skill Matrix</p>
-                    <h2 class="section__title">Technologies that power my builds.</h2>
-                    <p class="section__subtitle">A spectrum of tools across UI, engineering, and data that help
-                        transform business goals into delightful products.</p>
-                </header>
-                <div class="skills__grid" data-reveal>
-                    <article class="skill-cluster" data-reveal>
-                        <div id="particles-skill-1" class="card-particles"></div>
-                        <header>
-                            <h3>Frontend Engineering</h3>
-                            <span>Interfaces and micro-interactions</span>
-                        </header>
-                        <ul class="skill-list">
-                            <li><span>C · C++</span><span class="skill-badge">Systems thinking</span></li>
-                            <li><span>Java</span><span class="skill-badge">OOP foundations</span></li>
-                            <li><span>HTML · CSS · Tailwind</span><span class="skill-badge">Design systems</span></li>
-                            <li><span>JavaScript · TypeScript</span><span class="skill-badge">Interactive flows</span>
-                            </li>
-                        </ul>
-                    </article>
-                    <article class="skill-cluster" data-reveal>
-                        <div id="particles-skill-2" class="card-particles"></div>
-                        <header>
-                            <h3>Modern Frameworks</h3>
-                            <span>Composable architecture</span>
-                        </header>
-                        <ul class="skill-list">
-                            <li><span>React</span><span class="skill-badge">UI state machines</span></li>
-                            <li><span>Next.js</span><span class="skill-badge">Edge-ready apps</span></li>
-                            <li><span>Tailwind · Shadcn</span><span class="skill-badge">Rapid prototyping</span></li>
-                            <li><span>AOS · GSAP</span><span class="skill-badge">Motion storytelling</span></li>
-                        </ul>
-                    </article>
-                    <article class="skill-cluster" data-reveal>
-                        <div id="particles-skill-3" class="card-particles"></div>
-                        <header>
-                            <h3>Data &amp; Ops</h3>
-                            <span>Reliable experiences</span>
-                        </header>
-                        <ul class="skill-list">
-                            <li><span>MySQL</span><span class="skill-badge">Structured modeling</span></li>
-                            <li><span>REST APIs</span><span class="skill-badge">Integration ready</span></li>
-                            <li><span>Git · CI</span><span class="skill-badge">Efficient delivery</span></li>
-                            <li><span>EmailJS · Webhooks</span><span class="skill-badge">Automation</span></li>
-                        </ul>
-                    </article>
+        <!-- Experience Section -->
+        <section id="experience" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label">EXPERIENCE</span>
+                    <h2 class="section-title">A <span class="hero-gradient">journey</span> through engineering and
+                        design academia</h2>
                 </div>
-                <div class="skills__cloud" data-reveal aria-hidden="true">
-                    <span data-floating>UI/UX Research</span>
-                    <span data-floating>Interaction Design</span>
-                    <span data-floating>Design Tokens</span>
-                    <span data-floating>Responsive Systems</span>
-                    <span data-floating>Accessibility</span>
-                    <span data-floating>Storybook</span>
-                    <span data-floating>Performance Tuning</span>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2022 - 2026</div>
+                        <h3 class="timeline-title">Bachelor of Engineering · Computer Science</h3>
+                        <div class="timeline-subtitle">Karpagam Academy of Higher Education · CGPA 8.43</div>
+                        <p class="timeline-description">
+                            Specialising in full-stack engineering, advanced databases, and intelligent systems while
+                            leading student-led product initiatives.
+                        </p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">2020 - 2022</div>
+                        <h3 class="timeline-title">Higher Secondary · Computer Science</h3>
+                        <div class="timeline-subtitle">Little Angels Matric Higher Secondary School · 85%</div>
+                        <p class="timeline-description">
+                            Built a strong base in programming, mathematics, and electronics that seeded a passion
+                            for crafting digital experiences.
+                        </p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">2020</div>
+                        <h3 class="timeline-title">Secondary School Leaving Certificate</h3>
+                        <div class="timeline-subtitle">Little Angels Matric Higher Secondary School · 72%</div>
+                        <p class="timeline-description">
+                            Discovered the creative side of coding with robotics clubs and early UI experiments,
+                            forming the foundation of my tech career.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="projects" class="section projects">
-            <div class="container section__inner">
-                <header class="section__header" data-reveal>
-                    <p class="section__eyebrow">Projects</p>
-                    <h2 class="section__title">Selected builds that showcase my process.</h2>
-                    <p class="section__subtitle">Every project pairs intentional UI with measurable outcomes, ensuring
-                        aesthetics and engineering excellence co-exist.</p>
-                </header>
-                <div class="projects__grid" data-reveal>
-                    <article class="project-card" data-floating data-reveal>
-                        <div class="project-card__media">
-                            <img src="assets/img/ecommerce.jpg" alt="E-commerce platform interface">
-                            <span class="project-card__badge">Commerce Experience</span>
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label">PORTFOLIO</span>
+                    <h2 class="section-title">Featured <span class="hero-gradient">Projects</span></h2>
+                    <p class="section-description">Selected builds that showcase my process and technical expertise</p>
+                </div>
+
+                <div class="grid grid-3">
+                    <article class="project-card">
+                        <div class="project-image">
+                            <img src="images/ecommerce.jpg" alt="E-commerce Experience Accelerator">
                         </div>
-                        <div class="project-card__body">
-                            <header>
-                                <h3>E-commerce Experience Accelerator</h3>
-                                <p class="project-card__meta">Built with HTML · CSS · JavaScript</p>
-                            </header>
-                            <p>Responsive storefront with dynamic product orchestration, micro-animations, and
-                                conversion optimized funnels.</p>
-                            <ul class="project-card__tags">
-                                <li>Cart state sync</li>
-                                <li>Performance budget</li>
-                                <li>Progressive enhancement</li>
-                            </ul>
-                            <div class="project-card__actions">
-                                <button class="btn btn--ghost" type="button" data-project="ecommerce">Deep dive</button>
+                        <div class="project-content">
+                            <div class="project-tags">
+                                <span class="tag">HTML</span>
+                                <span class="tag">CSS</span>
+                                <span class="tag">JavaScript</span>
                             </div>
+                            <h3 class="project-title">E-commerce Experience Accelerator</h3>
+                            <p class="project-description">
+                                Responsive storefront with dynamic product orchestration, micro-animations, and
+                                conversion-optimized funnels. Features cart state sync and performance optimization.
+                            </p>
                         </div>
                     </article>
-                    <article class="project-card" data-floating data-reveal>
-                        <div class="project-card__media">
-                            <img src="assets/img/weather.webp" alt="Weather application dashboard">
-                            <span class="project-card__badge">Realtime Data</span>
+
+                    <article class="project-card">
+                        <div class="project-image">
+                            <img src="images/weather.jpg" alt="Atmos Weather Console">
                         </div>
-                        <div class="project-card__body">
-                            <header>
-                                <h3>Atmos Weather Console</h3>
-                                <p class="project-card__meta">Built with HTML · CSS · JavaScript · OpenWeather API</p>
-                            </header>
-                            <p>Interactive meteorology dashboard using live API fetching, ambient theming, and
-                                delightful loading states.</p>
-                            <ul class="project-card__tags">
-                                <li>Adaptive theming</li>
-                                <li>API resilience</li>
-                                <li>Offline fallback</li>
-                            </ul>
-                            <div class="project-card__actions">
-                                <button class="btn btn--ghost" type="button" data-project="weather">Deep dive</button>
+                        <div class="project-content">
+                            <div class="project-tags">
+                                <span class="tag">HTML</span>
+                                <span class="tag">CSS</span>
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">OpenWeather API</span>
                             </div>
+                            <h3 class="project-title">Atmos Weather Console</h3>
+                            <p class="project-description">
+                                Interactive meteorology dashboard using live API fetching, ambient theming, and
+                                delightful loading states with offline fallback capabilities.
+                            </p>
                         </div>
                     </article>
-                    <article class="project-card" data-floating data-reveal>
-                        <div class="project-card__media">
-                            <img src="assets/img/quiz.jpg" alt="Gamified quiz interface">
-                            <span class="project-card__badge">Learning</span>
+
+                    <article class="project-card">
+                        <div class="project-image">
+                            <img src="images/quiz.jpg" alt="Pulse Quiz Arena">
                         </div>
-                        <div class="project-card__body">
-                            <header>
-                                <h3>Pulse Quiz Arena</h3>
-                                <p class="project-card__meta">Built with HTML · CSS · JavaScript · Next.js</p>
-                            </header>
-                            <p>Gamified quizzing platform with adaptive difficulty, live scoring telemetry, and
-                                accessibility-first UI.</p>
-                            <ul class="project-card__tags">
-                                <li>State machines</li>
-                                <li>Gamification</li>
-                                <li>Analytics ready</li>
-                            </ul>
-                            <div class="project-card__actions">
-                                <button class="btn btn--ghost" type="button" data-project="quiz">Deep dive</button>
+                        <div class="project-content">
+                            <div class="project-tags">
+                                <span class="tag">HTML</span>
+                                <span class="tag">CSS</span>
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">Next.js</span>
                             </div>
+                            <h3 class="project-title">Pulse Quiz Arena</h3>
+                            <p class="project-description">
+                                Gamified quizzing platform with adaptive difficulty, live scoring telemetry, and
+                                accessibility-first UI with analytics-ready architecture.
+                            </p>
                         </div>
                     </article>
                 </div>
             </div>
         </section>
 
+        <!-- Contact Section -->
         <section id="contact" class="section contact">
-            <div class="container section__inner">
-                <header class="section__header" data-reveal>
-                    <p class="section__eyebrow">Contact</p>
-                    <h2 class="section__title">Let us build the next big experience together.</h2>
-                    <p class="section__subtitle">Share your idea, challenge, or roadmap. I will translate it into a
-                        captivating prototype and a resilient build.</p>
-                </header>
-                <div class="contact__grid">
-                    <article class="contact__card" data-reveal>
-                        <h3>Direct Channels</h3>
-                        <p class="contact__copy">Connect across platforms for collaborations, freelance opportunities,
-                            or speaking engagements.</p>
-                        <ul class="contact__links">
-                            <li><a href="https://github.com/maheswari06112004" target="_blank"
-                                    rel="noopener">GitHub<span class="ri-arrow-right-up-line"
-                                        aria-hidden="true"></span></a></li>
-                            <li><a href="https://www.linkedin.com/in/maheswari-a-bb829226a" target="_blank"
-                                    rel="noopener">LinkedIn<span class="ri-arrow-right-up-line"
-                                        aria-hidden="true"></span></a></li>
-                            <li><a href="https://wa.link/4wynga" target="_blank" rel="noopener">WhatsApp<span
-                                        class="ri-arrow-right-up-line" aria-hidden="true"></span></a></li>
-                        </ul>
-                        <div class="contact__visual" aria-hidden="true">
-                            <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_jp4bzx.json"
-                                background="transparent" speed="1" loop autoplay></lottie-player>
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label">CONTACT</span>
+                    <h2 class="section-title">Let's build something <span class="text-gradient">amazing</span></h2>
+                </div>
+
+                <div class="contact-grid">
+                    <div class="contact-info glass-card">
+                        <h3>Get in Touch</h3>
+                        <p>Share your idea, challenge, or roadmap. I will translate it into a captivating prototype and
+                            a resilient build.</p>
+
+                        <div class="info-list">
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="ri-mail-line"></i>
+                                </div>
+                                <div class="info-text">
+                                    <span class="info-label">Email</span>
+                                    <a href="mailto:contact@maheswari.dev">contact@maheswari.dev</a>
+                                </div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="ri-map-pin-line"></i>
+                                </div>
+                                <div class="info-text">
+                                    <span class="info-label">Location</span>
+                                    <span>India</span>
+                                </div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="ri-github-line"></i>
+                                </div>
+                                <div class="info-text">
+                                    <span class="info-label">GitHub</span>
+                                    <a href="https://github.com/maheswari06112004" target="_blank"
+                                        rel="noopener noreferrer">maheswari06112004</a>
+                                </div>
+                            </div>
                         </div>
-                    </article>
-                    <form id="contactForm" class="contact__form" novalidate data-reveal>
-                        <div class="form-row">
+                    </div>
+
+                    <form id="contactForm" class="contact-form glass-card" novalidate>
+                        <div class="form-group">
                             <label for="name">Name</label>
-                            <input id="name" name="name" type="text" placeholder="How should I address you?" required>
-                            <span class="form-error" id="error-name">Please share your name.</span>
+                            <input type="text" id="name" name="name" placeholder="Your name" required />
                         </div>
-                        <div class="form-row">
-                            <label for="email">Email</label>
-                            <input id="email" name="email" type="email" placeholder="you@amazingproduct.dev" required>
-                            <span class="form-error" id="error-email">Please provide a valid email.</span>
+
+                        <div class="form-group">
+                            <label for="from_mail">Email</label>
+                            <input type="email" id="from_mail" name="from_mail" placeholder="your.email@example.com"
+                                required />
                         </div>
-                        <div class="form-row">
-                            <label for="phone">Phone</label>
-                            <input id="phone" name="phone" type="tel" placeholder="Optional but appreciated">
-                            <span class="form-error" id="error-phone">Please provide a valid phone number.</span>
+
+                        <div class="form-group">
+                            <label for="phone">Phone (optional)</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+91 000 000 0000" />
                         </div>
-                        <div class="form-row">
-                            <label for="message">Project Brief</label>
-                            <textarea id="message" name="message" rows="4"
-                                placeholder="Tell me about the problem, timeline, and vision." required></textarea>
-                            <span class="form-error" id="error-message">A quick brief helps me prepare.</span>
+
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Tell me about your project..."
+                                required></textarea>
                         </div>
-                        <button class="btn btn--primary" id="submit-btn" type="submit">
-                            <span>Send transmission</span>
-                            <span class="ri-send-plane-2-line" aria-hidden="true"></span>
+
+                        <button type="submit" class="btn btn-primary submit-btn">
+                            <span>Send Message</span>
+                            <i class="ri-send-plane-line"></i>
                         </button>
-                        <div id="form-status" role="status" aria-live="polite"></div>
                     </form>
                 </div>
             </div>
         </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="waves">
+                <div class="wave wave1"></div>
+                <div class="wave wave2"></div>
+                <div class="wave wave3"></div>
+            </div>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <i class="ri-code-line"></i>
+                        <span>Maheswari A</span>
+                    </div>
+
+                    <p class="footer-text">&copy; 2025 Maheswari A. Designed and engineered with curiosity.</p>
+
+                    <div class="social-icons">
+                        <a href="https://www.linkedin.com/in/maheswari-a-bb829226a" target="_blank"
+                            rel="noopener noreferrer" aria-label="LinkedIn" class="social-link">
+                            <i class="ri-linkedin-line"></i>
+                        </a>
+                        <a href="https://github.com/maheswari06112004" target="_blank" rel="noopener noreferrer"
+                            aria-label="GitHub" class="social-link">
+                            <i class="ri-github-line"></i>
+                        </a>
+                        <a href="https://www.instagram.com/ma_hii?igsh=MWQxaHNvMDZtMnE0eQ==" target="_blank"
+                            rel="noopener noreferrer" aria-label="Instagram" class="social-link">
+                            <i class="ri-instagram-line"></i>
+                        </a>
+                        <a href="https://wa.link/4wynga" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"
+                            class="social-link">
+                            <i class="ri-whatsapp-line"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </main>
 
-    <footer class="site-footer">
-        <div class="container site-footer__inner">
-            <p>&copy; <span id="year"></span> Maheswari A. Designed and engineered with curiosity.</p>
-            <div class="site-footer__links">
-                <a href="https://github.com/maheswari06112004" target="_blank" rel="noopener" aria-label="GitHub"><span
-                        class="ri-github-line" aria-hidden="true"></span></a>
-                <a href="https://www.linkedin.com/in/maheswari-a-bb829226a" target="_blank" rel="noopener"
-                    aria-label="LinkedIn"><span class="ri-linkedin-line" aria-hidden="true"></span></a>
-                <a href="https://www.instagram.com/ma_hii?igsh=MWQxaHNvMDZtMnE0eQ==" target="_blank" rel="noopener"
-                    aria-label="Instagram"><span class="ri-instagram-line" aria-hidden="true"></span></a>
-            </div>
-        </div>
-    </footer>
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function () {
+            emailjs.init({
+                publicKey: "_gMAE-_7CCD88bzZn",
+            });
+        })();
 
-    <script src="script.js" defer></script>
+        function sendEmail(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const email = document.getElementById("from_mail").value.trim();
+            const message = document.getElementById("message").value.trim();
+
+            if (!name) {
+                alert("Name is required.");
+                return;
+            }
+
+            if (!email || !validateEmail(email)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+
+            if (phone && !validatePhone(phone)) {
+                alert("Please enter a valid phone number.");
+                return;
+            }
+
+            if (!message) {
+                alert("Message is required.");
+                return;
+            }
+
+            emailjs.sendForm("service_apoq02t", "template_ywkfeot", document.getElementById("contactForm"))
+                .then(
+                    () => {
+                        console.log("SUCCESS!");
+                        alert("Email sent successfully!");
+                        document.forms["contactForm"].reset();
+                    },
+                    (error) => {
+                        console.log("FAILED...", error);
+                        alert("Failed to send email. Please try again later.");
+                    }
+                );
+        }
+
+        function validateEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+
+        function validatePhone(phone) {
+            const phonePattern = /^\+?[0-9\s]*$/;
+            return phonePattern.test(phone);
+        }
+
+        document.getElementById("contactForm").addEventListener("submit", sendEmail);
+    </script>
+
+    <script src="js/main.js"></script>
 </body>
 
 </html>
