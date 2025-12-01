@@ -91,7 +91,7 @@
                         this.currentCell.classList.remove('glow');
                         this.currentCell = null;
                     }
-                }, 400);
+                }, 150);
             }
         }
 
@@ -372,14 +372,85 @@
         }
     }
 
+    // ==================== SCROLL COLOR TRANSITION ====================
+    class ScrollColorTransition {
+        constructor() {
+            // Three-stage color transition: Cyan -> Blue -> Purple
+            this.colors = [
+                { r: 34, g: 211, b: 238 },   // Bright Cyan #22d3ee
+                { r: 99, g: 102, b: 241 },   // Blue #6366f1
+                { r: 192, g: 132, b: 252 }   // Bright Purple #c084fc
+            ];
+            this.maxScroll = 4000; // Total scroll distance for complete transition
+            this.init();
+        }
+
+        init() {
+            this.updateColors();
+            window.addEventListener('scroll', () => this.updateColors(), { passive: true });
+        }
+
+        lerp(start, end, progress) {
+            return Math.round(start + (end - start) * progress);
+        }
+
+        rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('');
+        }
+
+        getColorAtProgress(progress) {
+            // Determine which two colors to interpolate between
+            const segments = this.colors.length - 1;
+            const scaledProgress = progress * segments;
+            const currentSegment = Math.floor(scaledProgress);
+            const segmentProgress = scaledProgress - currentSegment;
+
+            // Ensure we don't exceed array bounds
+            const startColorIndex = Math.min(currentSegment, segments - 1);
+            const endColorIndex = Math.min(currentSegment + 1, segments);
+
+            const startColor = this.colors[startColorIndex];
+            const endColor = this.colors[endColorIndex];
+
+            return {
+                r: this.lerp(startColor.r, endColor.r, segmentProgress),
+                g: this.lerp(startColor.g, endColor.g, segmentProgress),
+                b: this.lerp(startColor.b, endColor.b, segmentProgress)
+            };
+        }
+
+        updateColors() {
+            const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+            const progress = Math.min(scrollY / this.maxScroll, 1);
+
+            // Get interpolated color
+            const color = this.getColorAtProgress(progress);
+
+            // Calculate hover color (brighter)
+            const hoverR = Math.min(color.r + 40, 255);
+            const hoverG = Math.min(color.g + 40, 255);
+            const hoverB = Math.min(color.b + 40, 255);
+
+            // Update CSS variables
+            const root = document.documentElement;
+            root.style.setProperty('--accent', this.rgbToHex(color.r, color.g, color.b));
+            root.style.setProperty('--accent-hover', this.rgbToHex(hoverR, hoverG, hoverB));
+            root.style.setProperty('--accent-rgb', `${color.r}, ${color.g}, ${color.b}`);
+        }
+    }
+
     // ==================== INITIALIZATION ====================
     document.addEventListener('DOMContentLoaded', () => {
         new NeonGrid();
         new CustomCursor();
         new Navigation();
         new ScrollReveal();
+        new ScrollColorTransition();
 
-        console.log('🚀 Portfolio initialized');
+        console.log('🚀 Portfolio initialized with dynamic color transitions');
     });
 
     // ==================== RESIZE HANDLER ====================

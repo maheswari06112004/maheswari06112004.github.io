@@ -14,9 +14,15 @@
     --text-secondary: #a0a0b0;
     --text-muted: #6b6b7b;
 
-    --accent: #6366f1;
-    --accent-hover: #818cf8;
-    --accent-rgb: 99, 102, 241;
+    /* Dynamic accent colors (changed by JS on scroll) */
+    --accent: #22d3ee;
+    --accent-hover: #67e8f9;
+    --accent-rgb: 34, 211, 238;
+
+    /* Three-stage color transition: Cyan -> Blue -> Purple */
+    --color-cyan: #22d3ee;
+    --color-blue: #6366f1;
+    --color-purple: #c084fc;
 
     --border: rgba(255, 255, 255, 0.06);
     --border-hover: rgba(255, 255, 255, 0.12);
@@ -65,6 +71,7 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
+    transition: --accent 0.3s ease, --accent-rgb 0.3s ease;
 }
 
 /* ==================== GRID BACKGROUND ==================== */
@@ -76,11 +83,12 @@ body::before {
     width: 100vw;
     height: 100vh;
     background-image:
-        linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+        linear-gradient(to right, rgba(var(--accent-rgb), 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(var(--accent-rgb), 0.05) 1px, transparent 1px);
     background-size: 80px 80px;
     pointer-events: none;
     z-index: 0;
+    transition: background-image 0.3s ease;
 }
 
 /* Interactive neon grid overlay */
@@ -99,19 +107,20 @@ body::before {
     position: absolute;
     width: 80px;
     height: 80px;
-    border: 1px solid rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(var(--accent-rgb), 0.08);
     background: transparent;
     pointer-events: none;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .grid-cell.glow {
-    background: rgba(99, 102, 241, 0.2);
-    border-color: rgba(99, 102, 241, 0.6);
+    background: rgba(var(--accent-rgb), 0.2);
+    border-color: rgba(var(--accent-rgb), 0.6);
     box-shadow:
-        inset 0 0 30px rgba(99, 102, 241, 0.3),
-        0 0 30px rgba(99, 102, 241, 0.5),
-        0 0 60px rgba(99, 102, 241, 0.3);
+        inset 0 0 30px rgba(var(--accent-rgb), 0.3),
+        0 0 30px rgba(var(--accent-rgb), 0.5),
+        0 0 60px rgba(var(--accent-rgb), 0.3);
+    transition: none;
 }
 
 img {
@@ -563,8 +572,9 @@ ol {
 .section-description {
     font-size: 1.125rem;
     color: var(--text-secondary);
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
+    text-align: justify;
 }
 
 /* ==================== GRID SYSTEM ==================== */
@@ -604,7 +614,7 @@ ol {
     background: rgba(26, 26, 34, 0.4);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
     position: relative;
@@ -628,7 +638,7 @@ ol {
 }
 
 .card:hover {
-    border-color: rgba(var(--accent-rgb), 0.4);
+    border-color: rgba(var(--accent-rgb), 0.6);
     box-shadow:
         0 0 40px rgba(var(--accent-rgb), 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -735,24 +745,34 @@ ol {
 /* ==================== TIMELINE ==================== */
 .timeline {
     position: relative;
-    padding-left: var(--space-2xl);
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
 .timeline::before {
     content: '';
     position: absolute;
-    left: 0;
+    left: 50%;
     top: 0;
     bottom: 0;
     width: 2px;
     background: linear-gradient(to bottom, var(--accent), transparent);
+    transform: translateX(-50%);
 }
 
 .timeline-item {
     position: relative;
-    padding-bottom: var(--space-2xl);
+    padding-bottom: var(--space-3xl);
+    width: 50%;
+    padding-right: var(--space-3xl);
+    text-align: right;
+}
+
+.timeline-item:nth-child(even) {
+    margin-left: 50%;
+    padding-right: 0;
+    padding-left: var(--space-3xl);
+    text-align: left;
 }
 
 .timeline-item:last-child {
@@ -762,13 +782,19 @@ ol {
 .timeline-item::before {
     content: '';
     position: absolute;
-    left: calc(-1 * var(--space-2xl) - 5px);
+    right: calc(-1 * var(--space-lg) - 6px);
     top: 6px;
     width: 12px;
     height: 12px;
     background: var(--accent);
     border-radius: 50%;
     border: 3px solid var(--bg-primary);
+    z-index: 2;
+}
+
+.timeline-item:nth-child(even)::before {
+    left: calc(-1 * var(--space-lg) - 6px);
+    right: auto;
 }
 
 .timeline-date {
@@ -795,12 +821,35 @@ ol {
     line-height: 1.7;
 }
 
+/* Responsive Timeline */
+@media (max-width: 768px) {
+    .timeline::before {
+        left: var(--space-lg);
+        transform: none;
+    }
+
+    .timeline-item,
+    .timeline-item:nth-child(even) {
+        width: 100%;
+        margin-left: 0;
+        padding-left: var(--space-3xl);
+        padding-right: 0;
+        text-align: left;
+    }
+
+    .timeline-item::before,
+    .timeline-item:nth-child(even)::before {
+        left: calc(var(--space-lg) - 6px);
+        right: auto;
+    }
+}
+
 /* ==================== PROJECT CARDS ==================== */
 .project-card {
     background: rgba(26, 26, 34, 0.4);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--radius-lg);
     overflow: hidden;
     display: flex;
@@ -884,6 +933,7 @@ ol {
     color: var(--text-muted);
     line-height: 1.7;
     font-size: 0.9375rem;
+    text-align: justify;
     flex: 1;
 }
 
